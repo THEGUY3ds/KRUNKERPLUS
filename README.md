@@ -1,7 +1,7 @@
 # KRUNKERPLUS
 <b>Requirements:</b> • Tampermonkey</br>
 
-Krunker.io hack
+Krunker.io hack: Krunkerplus ver 0.1
 
 http://krunker.io v1.7.6
 
