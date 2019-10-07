@@ -1,0 +1,2 @@
+# KRUNKERPLUS
+Krunker.io hack
