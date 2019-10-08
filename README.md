@@ -5,6 +5,7 @@ Krunker.io hack: Krunkerplus ver 0.1
 
 http://krunker.io v1.7.6
 
+Discord: https://discord.gg/skUe5uk
 
 <h2>Userscript: <a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/krunkerplus.user.js" target="_blank">CLICK HERE</a></h2>
 
