@@ -12,6 +12,7 @@ Discord: https://discord.gg/skUe5uk
 SHOULD BE FIXED> Note: If u get loading error open three tabs may take acouple times. <SHOULD BE FIXED
 ## Features
 - [x] Fullscreen
+- [x] AdBlock
 - [x] Better Sniper Recticle
 - [x] Esp - thx to (hrt)
 - [ ] Aimbot
