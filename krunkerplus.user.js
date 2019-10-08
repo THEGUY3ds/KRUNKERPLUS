@@ -20,7 +20,7 @@ document.getElementById('modVote').innerHTML = 'KRUNKERPLUS+';
 document.getElementById("modVote").style.color = "Green";
 document.getElementById("texts3DHolder").innerHTML = 'GET MORE HACKS AT OVERHAX.ML';
 // Checkboxes
-document.getElementById("subLogoButtons").innerHTML = ' <input type="checkbox" id="myCheck">𝐁𝐞𝐭𝐭𝐞𝐫 𝐒𝐧𝐢𝐩𝐞𝐫 𝐑𝐞𝐜𝐭𝐢𝐜𝐥𝐞 <input type="checkbox" id="myCheck1">𝐄𝐧𝐚𝐛𝐥𝐞 𝐟𝐮𝐥𝐥𝐬𝐜𝐫𝐞𝐞𝐧 <input type="checkbox" id="myCheck2">𝐄𝐒𝐏';
+document.getElementById("subLogoButtons").innerHTML = '<div class="button small buttonP" id="menuBtnHost" onmouseenter="playTick()" onclick="openHostWindow()">Host Game</div><div class="button small buttonR" id="menuBtnBrowser" onmouseenter="playTick()" onclick="showWindow(2)">Server Browser</div><div id="inviteButton" class="button small" onmouseenter="playTick()" onclick="copyInviteLink()">Invite</div><div class="button small" id="menuBtnJoin" onmouseenter="playTick()" onclick="showWindow(24)">Join</div><div class="button small buttonP" id="hackMenu" onmouseenter="playTick()" onclick="window.open(\'http://overhax.ml\', \'_blank\', \'location=yes,height=570,width=520,scrollbars=yes,status=yes\');">Get MORE HACKS HERE</div></div><input type="checkbox" id="myCheck">𝐁𝐞𝐭𝐭𝐞𝐫 𝐒𝐧𝐢𝐩𝐞𝐫 𝐑𝐞𝐜𝐭𝐢𝐜𝐥𝐞 <input type="checkbox" id="myCheck1">𝐄𝐧𝐚𝐛𝐥𝐞 𝐟𝐮𝐥𝐥𝐬𝐜𝐫𝐞𝐞𝐧 <input type="checkbox" id="myCheck2">𝐄𝐒𝐏';
 document.getElementById("subLogoButtons").style.color = "white";
 // esp thx to hrt
 document.getElementById('myCheck2').addEventListener('click', () => {
