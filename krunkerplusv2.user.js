@@ -2,7 +2,7 @@
 // @name         Krunker plus v2
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  "STOP HACKING"
+// @description  "I'm aware krunker hacks are back. We are gonna work on fixing them as much as we can! -Sidney_de_Vries"
 // @author       THEGUY3ds
 // @require      http://code.jquery.com/jquery-3.3.1.min.js
 // @require      https://code.jquery.com/ui/1.12.0/jquery-ui.min.js
