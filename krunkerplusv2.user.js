@@ -46,8 +46,8 @@ unsafeWindow.hacks = [];
 unsafeWindow.hacks.push(new hack("GUI", "1", true));
 unsafeWindow.hacks.push(new hack("ESP", "2", true));
 unsafeWindow.hacks.push(new hack("Aimbot", "3", true));
-unsafeWindow.hacks.push(new hack("Fullscreen", "4", true));
-unsafeWindow.hacks.push(new hack("Better Sniper Recticle", "5", true));
+unsafeWindow.hacks.push(new hack("fullscreen", "4", true));
+unsafeWindow.hacks.push(new hack("betterSniperRecticle", "5", true));
 
 var GUI = document.createElement('div');
 GUI.style = "background-color: rgba(0,0,0,0.25);border-radius:5%;text-align:center;margin-top:5%;";
@@ -74,13 +74,11 @@ setInterval(function() {
     }
 }, 0);
 // better sniper recticle
- if (unsafeWindow.getHack("Better Sniper Recticle").status = true) {
+ if (unsafeWindow.getHack("betterSniperRecticle").status = true) {
       document.getElementById('aimRecticle').innerHTML = '<img id="recticleImg" src="https://i.redd.it/aa069tp99wh31.png">';
-  } else {
-      document.getElementById('aimRecticle').innerHTML = '<div class="topBox black" style="display: block;"></div><div class="leftBox black" style="display: block;"></div><img id="recticleImg" src="https://krunker.io/textures/recticle.png"><div class="bottomBox black" style="display: block;"></div><div class="rightBox black" style="display: block;"></div>';
   }
 // Full screen
- if (unsafeWindow.getHack("Fullscreen").status = true) {
+ if (unsafeWindow.getHack("fullscreen").status = true) {
      document.fullscreenEnabled =
 	document.fullscreenEnabled ||
 	document.mozFullScreenEnabled ||
@@ -134,11 +132,11 @@ window.addEventListener('keydown', (key) => {
         case unsafeWindow.getHack("Aimbot").keybind:
             unsafeWindow.getHack("Aimbot").status = !unsafeWindow.getHack("Aimbot").status;
             break;
-        case unsafeWindow.getHack("Fullscreen").keybind:
-            unsafeWindow.getHack("Fullscreen").status = !unsafeWindow.getHack("Aimbot").status;
+        case unsafeWindow.getHack("fullscreen").keybind:
+            unsafeWindow.getHack("fullscreen").status = !unsafeWindow.getHack("fullscreen").status;
             break;
-        case unsafeWindow.getHack("Better Sniper Recticle").keybind:
-            unsafeWindow.getHack("Better Sniper Recticle").status = !unsafeWindow.getHack("Aimbot").status;
+        case unsafeWindow.getHack("betterSniperRecticle").keybind:
+            unsafeWindow.getHack("betterSniperRecticle").status = !unsafeWindow.getHack("betterSniperRecticle").status;
             break;
     }
 });
