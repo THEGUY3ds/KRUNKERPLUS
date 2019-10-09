@@ -18,7 +18,7 @@ alert("INJECTED KRUNKERPLUS")
 document.title = "OVERHAX KRUNKER PLUS";
 document.getElementById("instructions").style.color = "Red";
 document.getElementById('instructions').innerHTML = 'Loading Krunker plus by OVERHAX | THEGUY3ds';
-document.getElementById('modVote').innerHTML = 'KRUNKERPLUS+';
+document.getElementById('modVote').innerHTML = 'KRUNKERPLUS+ V2';
 document.getElementById("modVote").style.color = "Green";
 document.getElementById("texts3DHolder").innerHTML = 'GET MORE HACKS AT OVERHAX.ML';
 // Adblock
