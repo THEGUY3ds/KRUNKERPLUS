@@ -134,5 +134,11 @@ window.addEventListener('keydown', (key) => {
         case unsafeWindow.getHack("Aimbot").keybind:
             unsafeWindow.getHack("Aimbot").status = !unsafeWindow.getHack("Aimbot").status;
             break;
+        case unsafeWindow.getHack("Fullscreen").keybind:
+            unsafeWindow.getHack("Fullscreen").status = !unsafeWindow.getHack("Aimbot").status;
+            break;
+        case unsafeWindow.getHack("Better Sniper Recticle").keybind:
+            unsafeWindow.getHack("Better Sniper Recticle").status = !unsafeWindow.getHack("Aimbot").status;
+            break;
     }
 });
