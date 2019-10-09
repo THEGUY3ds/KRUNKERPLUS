@@ -7,7 +7,7 @@
 // @require      http://code.jquery.com/jquery-3.3.1.min.js
 // @require      https://code.jquery.com/ui/1.12.0/jquery-ui.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js
-// @downloadURL  https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/krunkerplusv2.user.js
+// @downloadURL  https://github.com/THEGUY3ds/OVERHAX-MOO-PLUS/raw/master/UserScript.user.js
 // @include      /^(https?:\/\/)?(www\.)?(.+)krunker\.io(|\/|\/\?(server|party|game)=.+)$/
 // @icon         https://www.google.com/s2/favicons?domain=krunker.io
 // @grant        unsafeWindow
@@ -18,7 +18,7 @@ alert("INJECTED KRUNKERPLUS")
 document.title = "OVERHAX KRUNKER PLUS";
 document.getElementById("instructions").style.color = "Red";
 document.getElementById('instructions').innerHTML = 'Loading Krunker plus by OVERHAX | THEGUY3ds';
-document.getElementById('modVote').innerHTML = 'KRUNKERPLUS+ V2';
+document.getElementById('modVote').innerHTML = 'KRUNKERPLUS+';
 document.getElementById("modVote").style.color = "Green";
 document.getElementById("texts3DHolder").innerHTML = 'GET MORE HACKS AT OVERHAX.ML';
 // Adblock
@@ -58,7 +58,7 @@ GUI.style = "background-color: rgba(0,0,0,0.25);border-radius:5%;text-align:cent
 function guiReload() {
     GUI.innerHTML = "";
     if (unsafeWindow.getHack("GUI").status) {
-        GUI.innerHTML += "<br><h2 style='color:white;'>KRUNKERPLUS</h2>";
+        GUI.innerHTML += '<div><span style="color:#fff800;">K</span><span style="color:#ffe700;">R</span><span style="color:#ffd600;">U</span><span style="color:#ffc500;">N</span><span style="color:#ffb400;">K</span><span style="color:#faa631;">E</span><span style="color:#f59762;">R</span><span style="color:#f08992;">P</span><span style="color:#eb7ac3;">L</span><span style="color:#e66cf4;">U</span><span style="color:#ec5bc1;">S</span><span style="color:#f24a8e;"> </span><span style="color:#f7385a;">V</span><span style="color:#fd2727;">2</span></div>';
         unsafeWindow.hacks.forEach(function(hack) {
             GUI.innerHTML += `<h4 style='color:grey;'>[${hack.keybind}] ${hack.name}: ${hack.status ? "<span style='color:green'>ON</span>" : "<span style='color:red'>OFF</span>"}</h4>`;
         });
@@ -86,7 +86,6 @@ setInterval(function() {
 	document.fullscreenEnabled ||
 	document.mozFullScreenEnabled ||
 	document.documentElement.webkitRequestFullScreen;
-
 function requestFullscreen(element) {
 	if (element.requestFullscreen) {
 		element.requestFullscreen();
