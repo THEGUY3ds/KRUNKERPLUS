@@ -27,6 +27,7 @@ document.getElementById("subLogoButtons").innerHTML = '<div class="button small 
 document.getElementById("aContainer").style.color = "white";
 // Font size
 document.getElementById("aContainer").style.fontSize = "larger";
+
 // esp thx to hrt
 document.getElementById('myCheck2').addEventListener('click', () => {
 var checkBox = document.getElementById("myCheck2");
@@ -40,10 +41,9 @@ if (checkBox.checked == true){
             Object.defineProperty(args[0], 'inView', { get: function() { return true } });
      }
     }
-}
-// no reload
-
+};
 // check if check box one is checked
+
 document.getElementById('myCheck').addEventListener('click', () => {
 var checkBox = document.getElementById("myCheck");
 
@@ -52,8 +52,8 @@ var checkBox = document.getElementById("myCheck");
       document.getElementById('aimRecticle').innerHTML = '<img id="recticleImg" src="https://i.redd.it/aa069tp99wh31.png">';
   } else {
       document.getElementById('aimRecticle').innerHTML = '<div class="topBox black" style="display: block;"></div><div class="leftBox black" style="display: block;"></div><img id="recticleImg" src="https://krunker.io/textures/recticle.png"><div class="bottomBox black" style="display: block;"></div><div class="rightBox black" style="display: block;"></div>';
-  }
-  // Get checked state Full screen
+};
+// Get checked state Full screen
 document.getElementById('myCheck1').addEventListener('click', () => {
 var checkBox = document.getElementById("myCheck1");
 
@@ -77,6 +77,13 @@ if (document.fullscreenEnabled) {
 	requestFullscreen(document.documentElement);
 }
   }
+    function read(url) {
+    return new Promise(resolve => {
+        fetch(url).then(res => res.text()).then(res => {
+            return resolve(res);
+        });
+    });
+};
 });
 });
 });
