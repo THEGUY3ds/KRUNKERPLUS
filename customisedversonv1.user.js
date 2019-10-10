@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         Krunker plus 
 // @namespace    http://tampermonkey.net/
-// @version      0.2
-// @description  "STOP HACKING"
+// @version      0.2 Custom
+// @description  Custom krunkerplus verson
 // @author       THEGUY3ds
 // @require      http://code.jquery.com/jquery-3.3.1.min.js
 // @require      https://code.jquery.com/ui/1.12.0/jquery-ui.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js
-// @downloadURL  https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/krunkerplus.user.js
+// @downloadURL  https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/customisedversonv1.user.js
 // @include      /^(https?:\/\/)?(www\.)?(.+)krunker\.io(|\/|\/\?(server|party|game)=.+)$/
 // @icon         https://www.google.com/s2/favicons?domain=krunker.io
 // @grant        none
@@ -29,7 +29,18 @@ document.getElementById("subLogoButtons").innerHTML = '<div class="button small 
 document.getElementById("aContainer").style.color = "white";
 // Font size
 document.getElementById("aContainer").style.fontSize = "larger";
-
+// AimDot change
+    (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        try {
+            var d = document.createElement('div');
+            d.style.cssText = 'width:8px;height:8px;background-color:#0BDEE8;position:absolute;margin:auto;top:0;right:0;bottom:0;left:0;z-index:200;border-radius:4px';
+            document.body.appendChild(d);
+        } catch (e) { }
+    });
+})();
+//
 // esp thx to hrt
 document.getElementById('myCheck2').addEventListener('click', () => {
 var checkBox = document.getElementById("myCheck2");
@@ -45,7 +56,6 @@ if (checkBox.checked == true){
     }
 };
 // check if check box one is checked
-
 document.getElementById('myCheck').addEventListener('click', () => {
 var checkBox = document.getElementById("myCheck");
 
