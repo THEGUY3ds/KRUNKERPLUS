@@ -29,7 +29,18 @@ document.getElementById("subLogoButtons").innerHTML = '<div class="button small 
 document.getElementById("aContainer").style.color = "white";
 // Font size
 document.getElementById("aContainer").style.fontSize = "larger";
-
+// AimDot change
+    (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        try {
+            var d = document.createElement('div');
+            d.style.cssText = 'width:8px;height:8px;background-color:#0BDEE8;position:absolute;margin:auto;top:0;right:0;bottom:0;left:0;z-index:200;border-radius:4px';
+            document.body.appendChild(d);
+        } catch (e) { }
+    });
+})();
+//
 // esp thx to hrt
 document.getElementById('myCheck2').addEventListener('click', () => {
 var checkBox = document.getElementById("myCheck2");
