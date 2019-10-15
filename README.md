@@ -19,7 +19,7 @@ krunkerplus v2 still in development.
 Krunkerplus v3 working on thx skidlamer.
 
 ---------------------
-http://krunker.io v1.7.6
+http://krunker.io v1.7.7
 
 Discord: https://discord.gg/skUe5uk
 
