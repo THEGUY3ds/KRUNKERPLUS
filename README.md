@@ -33,12 +33,19 @@ Note: For v1 if u get hacks not activating please spam checkbox on all hacks or 
 -------------------------------------------------------------------------------------------------
 
 How to install v3:
+
 Extract the zip file (From v3 link above)
+
 Open the zip and drag the contents into a new folder.
+
 Open up chrome://extensions in your chromium browser.
+
 Make sure develpoer mode is enabled (top right)
+
 Load the extension
+
 Drag the latest zip folder onto chrome://extensions
+
 Or press "Load Unpacked" and find the folder in your file explorer
 
 -------------------------------------------------------------------------------------------------
