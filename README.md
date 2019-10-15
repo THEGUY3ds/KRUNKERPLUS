@@ -26,9 +26,22 @@ Discord: https://discord.gg/skUe5uk
 <h2>Userscript: <a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/krunkerplus.user.js" target="_blank">CLICK HERE</a></h2>
 <h2>Userscript V2 (NOT STABLE): <a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/krunkerplusv2.user.js" target="_blank">CLICK
 HERE</a></h2>
-<h2>Userscript V3 :<a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/KRUNKERPUS%20v3.zip" target="_blank">CLICK HERE</a></h2>
+<h2>Chrome Extension V3 :<a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/KRUNKERPUS%20v3.zip" target="_blank">CLICK HERE</a></h2>
+
 Note: For v1 if u get hacks not activating please spam checkbox on all hacks or wait till ur dead.   
 
+-------------------------------------------------------------------------------------------------
+
+How to install v3:
+Extract the zip file (From v3 link above)
+Open the zip and drag the contents into a new folder.
+Open up chrome://extensions in your chromium browser.
+Make sure develpoer mode is enabled (top right)
+Load the extension
+Drag the latest zip folder onto chrome://extensions
+Or press "Load Unpacked" and find the folder in your file explorer
+
+-------------------------------------------------------------------------------------------------
 ## Features
 - [x] Fullscreen
 - [x] AdBlock
