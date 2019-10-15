@@ -33,6 +33,7 @@ Note: For v1 if u get hacks not activating please spam checkbox on all hacks or 
 - [x] AdBlock
 - [x] Better Sniper Recticle
 - [x] Esp - thx to (hrt)
-- [ ] Aimbot
-- [ ] Trace lines
-- [ ] Box esp
+- [x] Aimbot
+- [x] Trace lines
+- [x] Box esp
+- [ ] Infinite ammo
