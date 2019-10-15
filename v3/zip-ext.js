@@ -23,6 +23,8 @@ document.getElementById('aimRecticle').innerHTML = '<img id="recticleImg" src="h
 var d = document.createElement('div');
 d.style.cssText = 'width:8px;height:8px;background-color:#0BDEE8;position:absolute;margin:auto;top:0;right:0;bottom:0;left:0;z-index:200;border-radius:4px';
 document.body.appendChild(d);
+//Fps counter
+javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
 //end
 class Utilities {
     constructor(exports = []) {
@@ -84,6 +86,7 @@ class Utilities {
         this.newFeature('EspMode', "3", ['Off', 'Full', '2d', 'Walls']);
         this.newFeature('AutoReload', "4", []);
         this.newFeature('NoDeathDelay', "5", []);
+		this.newFeature('InfinityAmmo', "6", []);
         let interval_leader = setInterval(() => {
             if (document.querySelector('#leaderDisplay') !== null) {
                 clearInterval(interval_leader);
@@ -156,6 +159,10 @@ class Utilities {
                 case 'EspMode':
                     this.settings.espMode = feature.value;
                     break;
+			    case 'InfinityAmmo':
+                    this.InfinityAmmo(feature.value);
+                    break;
+
             }
         }
     }
@@ -372,6 +379,11 @@ class Utilities {
         return true;
     }
 
+    InfinityAmmo(value) {
+        if (!value) return;
+		documentElementById('ammoVal').innerHTML = '<div>9999999 <span id="ammoMax"> | 9999999</span></div>';
+	}
+		 
     autoBhop(value) {
         if (!value) return;
         if (this.keyDown(" ")) { //Space
