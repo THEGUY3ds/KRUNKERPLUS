@@ -1,0 +1,24 @@
+{
+  "name": "KRUNKER PLUS",
+  "homepage_url": "http://overhax.ml",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "A krunker.io modification",
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "*://krunker.io/*",
+    "*://matchmaker.krunker.io/*",
+    "background"
+  ],
+  "web_accessible_resources": [
+    "zip.js", "zip-ext.js"
+  ],
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_title": "Krunker plus"
+  },
+  "background": {
+    "scripts": ["hook.js"]
+  }
+}
