@@ -26,7 +26,7 @@ Discord: https://discord.gg/skUe5uk
 <h2>Userscript: <a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/krunkerplus.user.js" target="_blank">CLICK HERE</a></h2>
 <h2>Userscript V2 (NOT STABLE): <a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/krunkerplusv2.user.js" target="_blank">CLICK
 HERE</a></h2>
-<h2>Chrome Extension V3 :<a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/KRUNKERPUS%20v3.zip" target="_blank">CLICK HERE</a></h2>
+<h2>Chrome Extension V3 :<a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/KRUNKERPLUS%20v3.zip" target="_blank">CLICK HERE</a></h2>
 
 Note: For v1 if u get hacks not activating please spam checkbox on all hacks or wait till ur dead.   
 
