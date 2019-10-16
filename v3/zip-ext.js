@@ -11,7 +11,7 @@ document.getElementById("modVote").style.color = "Green";
 document.getElementById("texts3DHolder").innerHTML = 'GET MORE HACKS AT OVERHAX.ML';
 // Adblock
 document.getElementById("krunkerio_728x90_1").remove();
-// Checkboxes
+// more shit
 document.getElementById("subLogoButtons").innerHTML = '<div class="button small buttonP" id="menuBtnHost" onmouseenter="playTick()" onclick="openHostWindow()">Host Game</div><div class="button small buttonR" id="menuBtnBrowser" onmouseenter="playTick()" onclick="showWindow(2)">Server Browser</div><div id="inviteButton" class="button small" onmouseenter="playTick()" onclick="copyInviteLink()">Invite</div><div class="button small" id="menuBtnJoin" onmouseenter="playTick()" onclick="showWindow(24)">Join</div><div class="button small buttonP" id="hackMenu" onmouseenter="playTick()" onclick="window.open(\'http://overhax.ml\', \'_blank\', \'location=yes,height=570,width=520,scrollbars=yes,status=yes\');">Get MORE HACKS HERE</div></div>';
 document.getElementById("aContainer").innerHTML = 'KRUNKERPLUS V3 overhax.ml';
 document.getElementById("aContainer").style.color = "white";
@@ -23,6 +23,7 @@ document.getElementById('aimRecticle').innerHTML = '<img id="recticleImg" src="h
 var d = document.createElement('div');
 d.style.cssText = 'width:8px;height:8px;background-color:#0BDEE8;position:absolute;margin:auto;top:0;right:0;bottom:0;left:0;z-index:200;border-radius:4px';
 document.body.appendChild(d);
+///
 //Fps counter
 javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
 //end
@@ -381,8 +382,14 @@ class Utilities {
 
     InfinityAmmo(value) {
         if (!value) return;
-		documentElementById('ammoVal').innerHTML = '<div>9999999 <span id="ammoMax"> | 9999999</span></div>';
+		function InfinityAmmo(){
+			 document.getElementById("ammoVal").innerHTML = '9999';
+		}
+		setInterval(InfinityAmmo, 1000);
 	}
+
+	
+
 		 
     autoBhop(value) {
         if (!value) return;
