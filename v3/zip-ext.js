@@ -23,9 +23,34 @@ document.getElementById('aimRecticle').innerHTML = '<img id="recticleImg" src="h
 var d = document.createElement('div');
 d.style.cssText = 'width:8px;height:8px;background-color:#0BDEE8;position:absolute;margin:auto;top:0;right:0;bottom:0;left:0;z-index:200;border-radius:4px';
 document.body.appendChild(d);
-///
 //Fps counter
 javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+//Full screen
+document.fullscreenEnabled =
+	document.fullscreenEnabled ||
+	document.mozFullScreenEnabled ||
+	document.documentElement.webkitRequestFullScreen;
+
+function requestFullscreen(element) {
+	if (element.requestFullscreen) {
+		element.requestFullscreen();
+	} else if (element.mozRequestFullScreen) {
+		element.mozRequestFullScreen();
+	} else if (element.webkitRequestFullScreen) {
+		element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+	}
+}
+
+if (document.fullscreenEnabled) {
+	requestFullscreen(document.documentElement);
+}
+    function read(url) {
+    return new Promise(resolve => {
+        fetch(url).then(res => res.text()).then(res => {
+            return resolve(res);
+        });
+    });
+};
 //end
 class Utilities {
     constructor(exports = []) {
