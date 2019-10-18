@@ -16,7 +16,7 @@ Krunkerplus ver 0.2
 
 krunkerplus v2 still in development.
 
-Krunkerplus v3 working on thx skidlamer.
+Krunkerplus v3.2 thx skidlamer.
 
 ---------------------
 http://krunker.io v1.7.7
