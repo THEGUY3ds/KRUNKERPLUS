@@ -368,14 +368,13 @@ class Utilities {
                     /*Trigger Bot*/
                     lockedOn = this.quickscoper(target);
                     break;
-                default: break;
             }
         }
         if (!lockedOn) {
 			this.world.config.deltaMlt = 1;
-            this.camLookAt(0, 0, 0);
+            this.camLookAt(null);
             this.control.target = null;
-            if (this.control.mouseDownR == 2) {
+            if (this.control.mouseDownR == 0) {
                 this.control.mouseDownR = 0;
             }
         }
