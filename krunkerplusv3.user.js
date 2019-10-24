@@ -3,7 +3,7 @@
 // @namespace           http://overhax.ml
 // @author              OVERHAX | THEGUY3ds
 // @description         "I'm aware krunker hacks are back. We are gonna work on fixing them as much as we can! -Sidney_de_Vries"
-// @version             v3.3
+// @version             v3.4
 // @supportURL          http://overhax.ml/krunkerPlus
 // @icon                https://www.google.com/s2/favicons?domain=krunker.io
 // @require             http://code.jquery.com/jquery-3.3.1.min.js
@@ -26,7 +26,7 @@ document.getElementById("texts3DHolder").innerHTML = 'GET MORE HACKS AT OVERHAX.
 document.getElementById("krunkerio_728x90_1").remove();
 // more shit
 document.getElementById("subLogoButtons").innerHTML = '<div class="button small buttonP" id="menuBtnHost" onmouseenter="playTick()" onclick="openHostWindow()">Host Game</div><div class="button small buttonR" id="menuBtnBrowser" onmouseenter="playTick()" onclick="showWindow(2)">Server Browser</div><div id="inviteButton" class="button small" onmouseenter="playTick()" onclick="copyInviteLink()">Invite</div><div class="button small" id="menuBtnJoin" onmouseenter="playTick()" onclick="showWindow(24)">Join</div><div class="button small buttonP" id="hackMenu" onmouseenter="playTick()" onclick="window.open(\'http://overhax.ml\', \'_blank\', \'location=yes,height=570,width=520,scrollbars=yes,status=yes\');">Get MORE HACKS HERE</div></div>';
-document.getElementById("aContainer").innerHTML = 'KRUNKERPLUS V3.3 overhax.ml';
+document.getElementById("aContainer").innerHTML = 'KRUNKERPLUS V3.4 overhax.ml';
 document.getElementById("aContainer").style.color = "white";
 // Font size
 document.getElementById("aContainer").style.fontSize = "larger";
@@ -37,7 +37,7 @@ var d = document.createElement('div');
 d.style.cssText = 'width:8px;height:8px;background-color:#0BDEE8;position:absolute;margin:auto;top:0;right:0;bottom:0;left:0;z-index:200;border-radius:4px';
 document.body.appendChild(d);
 // Chat messege
-document.getElementById('chatList').innerHTML = '<div class="chatItem" style="word-break:break-all;overflow-wrap:break-word;"><span class="chatMsg"><span style="color:#eb5656">OVERHAX TEAM KRUNKERPLUS</span><img style="opacity:0.7;margin-right:9px;" <span style="color:#eb5656">V.3.3 overhax.ml</span></span></div>';
+document.getElementById('chatList').innerHTML = '<div class="chatItem" style="word-break:break-all;overflow-wrap:break-word;"><span class="chatMsg"><span style="color:#eb5656">OVERHAX TEAM KRUNKERPLUS</span><img style="opacity:2.0;margin-right:9px;" <span style="color:#eb5656">V.3.4 overhax.ml</span><div class="chatItem" style="word-break:break-all;overflow-wrap:break-word;"><span class="chatMsg"><img style="opacity:0.7;margin-right:9px;"<span style="color:#FFC300">Working on v.1.8.0</span></span></span></div></div>';
 //Fps counter
 javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
 //Full screen
@@ -128,7 +128,6 @@ class Utilities {
         this.newFeature('AutoBhop', "2", ['Off', 'Auto Jump', 'Auto Slide']);
         this.newFeature('EspMode', "3", ['Off', 'Full', '2d', 'Walls']);
         this.newFeature('AutoReload', "4", []);
-        this.newFeature('NoDeathDelay', "5", []);
         this.newFeature('InfinityAmmo', "6", []);
         let interval_leader = setInterval(() => {
             if (document.querySelector('#killCount') !== null) {
@@ -192,11 +191,11 @@ class Utilities {
                 case 'AutoBhop':
                     this.autoBhop(feature.value);
                     break;
-                case 'NoDeathDelay':
-                    if (feature.value && this.me && this.me.health === 0) {
-                        this.server.deathDelay = 0;
-                    }
-                    break;
+                //case 'NoDeathDelay':
+                    //if (feature.value && this.me && this.me.health === 0) {
+                        //this.server.deathDelay = 0;
+                    //}
+                   // break;
                 case 'EspMode':
                     this.settings.espMode = feature.value;
                     break;
@@ -415,6 +414,8 @@ class Utilities {
 
         return true;
     }
+
+
     autoBhop(value) {
         if (!value) return;
         if (this.keyDown(" ")) { //Space
@@ -609,7 +610,7 @@ function patchGame(source) {
      .set("exports", [/(\['__CANCEL__']=.*?\(\w+,\w+,(\w+)\){)(let)/, '$1window.utilities=new Utilities();utilities.exports=$2;$3'])
      .set("controlView", [/(if\(this\['target']\){)/, '$1this.object.rotation.y=this.target.yD;this.pitchObject.rotation.x=this.target.xD;const half=Math.PI/2;this.yDr=Math.max(-half,Math.min(half,this.target.xD))%Math.PI;this.xDr=this.target.yD%Math.PI;'])
      .set("control", [/(=this;this\['gamepad'])/, '=utilities.control$1'])
-     .set("procInputs", [/(this\['procInputs']=function\((\w+),(\w+),(\w+)\){)/, '$1utilities.onTick(this,$3,$2);'])
+     .set("procInputs", [/(this\[\'procInputs\'\]=function\((\w+),(\w+),(\w+),(\w+)\)\{)/, '$1utilities.onTick(this,$3,$2);'])
      .set("ui", [/(this,\w+={};this\['frustum'])/, 'utilities.ui=$1'])
      .set("fixHowler", [/(Howler\['orientation'](.+?)\)\),)/, ``])
      .set("clearRec", [/(if\(\w+\['save']\(\),\w+\['scale']\(\w+,\w+\),)\w+\['clearRect']\(0x0,0x0,\w+,\w+\),(\w+\['showDMG']\))/, '$1$2'])
