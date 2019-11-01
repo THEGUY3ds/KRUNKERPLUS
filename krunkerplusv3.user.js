@@ -3,7 +3,7 @@
 // @namespace           http://overhax.ml
 // @author              OVERHAX | THEGUY3ds
 // @description         "I'm aware krunker hacks are back. We are gonna work on fixing them as much as we can! -Sidney_de_Vries"
-// @version             v3.4
+// @version             v3.5
 // @supportURL          http://overhax.ml/krunkerPlus
 // @icon                https://www.google.com/s2/favicons?domain=krunker.io
 // @require             http://code.jquery.com/jquery-3.3.1.min.js
@@ -26,7 +26,7 @@ document.getElementById("texts3DHolder").innerHTML = 'GET MORE HACKS AT OVERHAX.
 document.getElementById("krunkerio_728x90_1").remove();
 // more shit
 document.getElementById("subLogoButtons").innerHTML = '<div class="button small buttonP" id="menuBtnHost" onmouseenter="playTick()" onclick="openHostWindow()">Host Game</div><div class="button small buttonR" id="menuBtnBrowser" onmouseenter="playTick()" onclick="showWindow(2)">Server Browser</div><div id="inviteButton" class="button small" onmouseenter="playTick()" onclick="copyInviteLink()">Invite</div><div class="button small" id="menuBtnJoin" onmouseenter="playTick()" onclick="showWindow(24)">Join</div><div class="button small buttonP" id="hackMenu" onmouseenter="playTick()" onclick="window.open(\'http://overhax.ml\', \'_blank\', \'location=yes,height=570,width=520,scrollbars=yes,status=yes\');">Get MORE HACKS HERE</div></div>';
-document.getElementById("aContainer").innerHTML = 'KRUNKERPLUS V3.4 overhax.ml';
+document.getElementById("aContainer").innerHTML = 'KRUNKERPLUS V3.5 overhax.ml';
 document.getElementById("aContainer").style.color = "white";
 // Font size
 document.getElementById("aContainer").style.fontSize = "larger";
@@ -37,10 +37,11 @@ var d = document.createElement('div');
 d.style.cssText = 'width:8px;height:8px;background-color:#0BDEE8;position:absolute;margin:auto;top:0;right:0;bottom:0;left:0;z-index:200;border-radius:4px';
 document.body.appendChild(d);
 // Chat messege
-document.getElementById('chatList').innerHTML = '<div class="chatItem" style="word-break:break-all;overflow-wrap:break-word;"><span class="chatMsg"><span style="color:#eb5656">OVERHAX TEAM KRUNKERPLUS</span><img style="opacity:2.0;margin-right:9px;" <span style="color:#eb5656">V.3.4 overhax.ml</span><div class="chatItem" style="word-break:break-all;overflow-wrap:break-word;"><span class="chatMsg"><img style="opacity:0.7;margin-right:9px;"<span style="color:#FFC300">Working on v.1.8.0</span></span></span></div></div>';
+document.getElementById('chatList').innerHTML = '<div class="chatItem"><span style="color:#DAE110">Working on 1.8.2<span class="chatMsg">| OVERHAX KRUNKERPLUS V3.5  <span class="chatMsg"><span style="color:#F18938"> | OVERHAX.ML</span></span></span></div>';
 //Fps counter
 javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
 //Full screen
+//<div class="chatItem" style="word-break:break-all;overflow-wrap:break-word;"><span class="chatMsg"><span style="color:#eb5656">DodgyDucks</span><img style="opacity:0.7;margin-right:9px;" class="weaponChatIcon" src="./textures/weapons/icon_1.png"><img class="headShotChatIcon" src="./img/headshot_0.png"><span style="color:#eb5656">SpoopyAmos</span></span></div>
 document.fullscreenEnabled =
 	document.fullscreenEnabled ||
 	document.mozFullScreenEnabled ||
@@ -315,7 +316,7 @@ class Utilities {
     getTarget() {
         const players = this.world.players.list.filter(player => { return player.active && !player.isYou });
         const targets = players.filter(player => {
-            return player.isSeen && (!player.team || player.team !== this.me.team)
+            return player.cnBSeen && (!player.team || player.team !== this.me.team)
         }).sort((p1, p2) => this.getDistance(this.me, p1) - this.getDistance(this.me, p2));
         return targets[0];
     }
@@ -379,7 +380,7 @@ class Utilities {
         }
     }
 
-    quickscoper(target) {
+quickscoper(target) {
         if (this.control.mouseDownL === 1) {
             this.control.mouseDownL = 0;
             this.control.mouseDownR = 0;
@@ -398,23 +399,19 @@ class Utilities {
 			this.world.config.deltaMlt = 1;
             return false;
         }
-
-		this.world.config.deltaMlt = this.settings.delta;
+		this.world.config.deltaMlt = 5;
 		this.lookAt(target);
-        if (this.control.mouseDownR !== 2) {
-            this.control.mouseDownR = 2;
-        }
-
+		if (this.control.mouseDownR !== 2) {
+			this.control.mouseDownR = 2;
+		}
         if (this.me.aimVal < 0.2) {
-			this.world.config.deltaMlt = this.settings.delta;
-            this.lookAt(target);
+			this.world.config.deltaMlt = 5;
             this.control.mouseDownL ^= 1;
 			this.world.config.deltaMlt = 1;
         }
 
         return true;
     }
-
 
     autoBhop(value) {
         if (!value) return;
@@ -517,7 +514,7 @@ class Utilities {
         }
         return grad;
     }
-
+//U2NyaXB0IGJ5IFRIRUdVWTNkcyBvdmVyaGF4Lm1s
     getTextMeasurements(arr) {
         for (let i = 0; i < arr.length; i++) {
             arr[i] = ~~this.ctx.measureText(arr[i]).width;
@@ -615,7 +612,7 @@ function patchGame(source) {
      .set("fixHowler", [/(Howler\['orientation'](.+?)\)\),)/, ``])
      .set("clearRec", [/(if\(\w+\['save']\(\),\w+\['scale']\(\w+,\w+\),)\w+\['clearRect']\(0x0,0x0,\w+,\w+\),(\w+\['showDMG']\))/, '$1$2'])
      .set("onRender", [/((\w+)\['render']=function\((\w+,\w+,\w+,\w+,\w+)\){)/, '$1utilities.onRender($2,$3);'])
-     .set("pInfo", [/(if\()(!\w+\['isSeen']\)continue;)/, '$1utilities.settings.espMode==1||utilities.settings.espMode==0&&$2'])
+     .set("pInfo", [/(if\()(!\w+\['cnBSeen']\)continue;)/, '$1utilities.settings.espMode==1||utilities.settings.espMode==0&&$2'])
      .set("wallhack", [/(\(((\w+))=this\['map']\['manager']\['objects']\[(\w+)]\))(.+?)\)/, '$1.penetrable&&$2.active)'])
      .set("socket", [/(new WebSocket)/, 'utilities.socket=$1'])
 
@@ -638,3 +635,4 @@ function patchGame(source) {
     self.Function = new Proxy(Function, handler);
     hideHook(Function, original);
 })();
+// Script By THEGUY3ds pls dont steal
