@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Krunker.io Psilent ༼˵☯‿☯˵༽つ──☆*:・ﾟ
 // @namespace    https://twitter.com/sidney_de_vries
-// @version      1.8.0
+// @version      1.8.2
 // @author       axthny x hrt x Funk? x OVERHAX | THEGUY3ds
 // @match        *://krunker.io/*
 // @run-at       document-start
@@ -120,7 +120,7 @@ function patch(script) {
           }
 
           const possibleTargets = players.filter(player => {
-              return player.active && player.isSeen && !player.isYou && (!player.team || player.team !== myself.team);
+              return player.active && player.cnBSeen && !player.isYou && (!player.team || player.team !== myself.team);
           }).sort((p1, p2) => dist(myself, p1) - dist(myself, p2));
 
           let isLockedOn = false;
@@ -173,7 +173,7 @@ function patch(script) {
       }, this.camLookAt =
     `);
     script = script.replace(/(\w+)\[\'\w+\'\](\(\w+\[\'x\'\]\,\w+\[\'y\'\]\+\w+\[\'height\'\]\/1.5\,\w+\[\'z\'\])/, `$1['camLookAt']$2`);
-    script = script.replace(/if\(!\w+\['isSeen'\]\)continue;/, `if(!getHack("ESP").status)continue;`);
+    script = script.replace(/(if\()(!\w+\['cnBSeen']\)continue;)/, `if(!getHack("ESP").status)continue;`);
 
     return script;
 }
