@@ -129,7 +129,7 @@ class Utilities {
         this.newFeature('AutoBhop', "2", ['Off', 'Auto Jump', 'Auto Slide']);
         this.newFeature('EspMode', "3", ['Off', 'Full', '2d', 'Walls']);
         this.newFeature('AutoReload', "4", []);
-        this.newFeature('InfinityAmmo', "6", []);
+        this.newFeature('InfinityAmmo', "5", []);
         let interval_leader = setInterval(() => {
             if (document.querySelector('#killCount') !== null) {
                 clearInterval(interval_leader);
