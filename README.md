@@ -21,7 +21,7 @@ Krunkerplus v3.2 thx skidlamer.
 ---------------------
 http://krunker.io v1.7.7
 
-Discord: https://discord.gg/skUe5uk
+Our Discord: https://discord.gg/HtMftuE or backup server: https://discord.gg/9u7HeMK
 
 <h2>Userscript: <a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/krunkerplus.user.js" target="_blank">CLICK HERE</a></h2>
 <h2>Userscript V2 (NOT STABLE): <a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/krunkerplusv2.user.js" target="_blank">CLICK
