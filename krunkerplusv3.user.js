@@ -3,7 +3,7 @@
 // @namespace           http://overhax.ml
 // @author              OVERHAX | THEGUY3ds
 // @description         "I'm aware krunker hacks are back. We are gonna work on fixing them as much as we can! -Sidney_de_Vries"
-// @version             v3.5
+// @version             v3.6
 // @supportURL          http://overhax.ml/krunkerPlus
 // @icon                https://www.google.com/s2/favicons?domain=krunker.io
 // @require             http://code.jquery.com/jquery-3.3.1.min.js
@@ -26,7 +26,7 @@ document.getElementById("texts3DHolder").innerHTML = 'GET MORE HACKS AT OVERHAX.
 document.getElementById("krunkerio_728x90_1").remove();
 // more shit
 document.getElementById("subLogoButtons").innerHTML = '<div class="button small buttonP" id="menuBtnHost" onmouseenter="playTick()" onclick="openHostWindow()">Host Game</div><div class="button small buttonR" id="menuBtnBrowser" onmouseenter="playTick()" onclick="showWindow(2)">Server Browser</div><div id="inviteButton" class="button small" onmouseenter="playTick()" onclick="copyInviteLink()">Invite</div><div class="button small" id="menuBtnJoin" onmouseenter="playTick()" onclick="showWindow(24)">Join</div><div class="button small buttonP" id="hackMenu" onmouseenter="playTick()" onclick="window.open(\'http://overhax.ml\', \'_blank\', \'location=yes,height=570,width=520,scrollbars=yes,status=yes\');">Get MORE HACKS HERE</div></div>';
-document.getElementById("aContainer").innerHTML = 'KRUNKERPLUS V3.5 overhax.ml';
+document.getElementById("aContainer").innerHTML = 'KRUNKERPLUS V3.6 overhax.ml';
 document.getElementById("aContainer").style.color = "white";
 // Font size
 document.getElementById("aContainer").style.fontSize = "larger";
@@ -37,7 +37,7 @@ var d = document.createElement('div');
 d.style.cssText = 'width:8px;height:8px;background-color:#0BDEE8;position:absolute;margin:auto;top:0;right:0;bottom:0;left:0;z-index:200;border-radius:4px';
 document.body.appendChild(d);
 // Chat messege
-document.getElementById('chatList').innerHTML = '<div class="chatItem"><span style="color:#DAE110">Working on 1.8.3<span class="chatMsg">| OVERHAX KRUNKERPLUS V3.5  <span class="chatMsg"><span style="color:#F18938"> | OVERHAX.ML</span></span></span></div>';
+document.getElementById('chatList').innerHTML = '<div class="chatItem"><span style="color:#DAE110">Working on 1.8.8<span class="chatMsg">| OVERHAX KRUNKERPLUS V3.6  <span class="chatMsg"><span style="color:#F18938"> | OVERHAX.ML</span></span></span></div>';
 //Fps counter
 javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
 //Full screen
@@ -75,7 +75,6 @@ class Utilities {
         this.me;
         this.world;
         this.inputs;
-        this.control;
         this.socket;
         this.server;
         this.keys = new Set();
@@ -174,7 +173,7 @@ class Utilities {
         return String( '<font style="color:' + this.rgb2hex(rgb[0],rgb[1],rgb[2]) + '"' + options + '>' + str + '</font>');
     }
 
-    onTick(me, world, inputs) {
+   onTick(me, world, inputs) {
         this.me = me;
         this.world = world;
         this.inputs = inputs;
@@ -280,28 +279,26 @@ class Utilities {
     getAngleDist(start, end) {
         return Math.atan2(Math.sin(end - start), Math.cos(start - end));
     }
-
     camLookAt(X, Y, Z) {
-        const currentXDR = this.control.xDr;
-        const currentYDR = this.control.yDr;
-        var xdir = this.getXDir(this.control.object.position.x, this.control.object.position.y, this.control.object.position.z, X, Y, Z),
-            ydir = this.getDirection(this.control.object.position.z, this.control.object.position.x, Z, X),
+        const currentXDR = this.world.controls.xDr;
+        const currentYDR = this.world.controls.yDr;
+        var xdir = this.getXDir(this.world.controls.object.position.x, this.world.controls.object.position.y, this.world.controls.object.position.z, X, Y, Z),
+            ydir = this.getDirection(this.world.controls.object.position.z, this.world.controls.object.position.x, Z, X),
             camChaseDst = this.server.camChaseDst;
-        this.control.target = {
+        this.world.controls.target = {
             xD: xdir,
             yD: ydir,
             x: X + camChaseDst * Math.sin(ydir) * Math.cos(xdir),
             y: Y - camChaseDst * Math.sin(xdir),
             z: Z + camChaseDst * Math.cos(ydir) * Math.cos(xdir)
         }
-        this.control.xDr = currentXDR;
-        this.control.yDr = currentYDR;
+        this.world.controls.xDr = currentXDR;
+        this.world.controls.yDr = currentYDR;
     }
 
     lookAt(target) {
         this.camLookAt(target.x2, target.y2 + target.height - target.headScale / 2 - this.server.crouchDst * target.crouchVal - this.me.recoilAnimY * this.server.recoilMlt * 25, target.z2);
     }
-
     getStatic(s, d) {
         if (typeof s == 'undefined') {
             return d;
@@ -314,14 +311,13 @@ class Utilities {
     }
 
     getTarget() {
-        const players = this.world.players.list.filter(player => { return player.active && !player.isYou });
+        const players = this.world.players.list.filter(player => { return player.active && !player.canSee });
         const targets = players.filter(player => {
             return player.cnBSeen && (!player.team || player.team !== this.me.team)
         }).sort((p1, p2) => this.getDistance(this.me, p1) - this.getDistance(this.me, p2));
         return targets[0];
     }
-
-    autoAim(value) {
+      autoAim(value) {
         if (!value) return;
         var lockedOn = false;
         const target = this.getTarget();
@@ -335,7 +331,7 @@ class Utilities {
             switch (value) {
                 case 1:
                     /*Aim Assist*/
-                    if (this.control.mouseDownR === 1) {
+                    if (this.world.controls.mouseDownR === 1) {
 						this.world.config.deltaMlt = this.settings.delta;
                         this.lookAt(target);
 						this.world.config.deltaMlt = 1;
@@ -346,9 +342,9 @@ class Utilities {
                     break;
                 case 2:
                     /*Aim Bot*/
-					if (this.control.mouseDownL === 1) {
-						this.control.mouseDownL = 0;
-						this.control.mouseDownR = 0;
+					if (this.world.controls.mouseDownL === 1) {
+						this.world.controls.mouseDownL = 0;
+						this.world.controls.mouseDownR = 0;
 						this.settings.scopingOut = true;
 					}
 					if (this.me.aimVal === 1) {
@@ -357,8 +353,8 @@ class Utilities {
 					if (!this.settings.scopingOut && this.settings.canShoot && this.me.recoilForce <= 0.01) {
 						this.world.config.deltaMlt = this.settings.delta;
                     this.lookAt(target);
-						if (this.control.mouseDownR !== 2) {
-                        this.control.mouseDownR = 2;
+						if (this.world.controls.mouseDownR !== 2) {
+                        this.world.controls.mouseDownR = 2;
 						}
                         lockedOn = true;
 						this.world.config.deltaMlt = 1;
@@ -373,17 +369,17 @@ class Utilities {
         if (!lockedOn) {
 			this.world.config.deltaMlt = 1;
             this.camLookAt(null);
-            this.control.target = null;
-            if (this.control.mouseDownR == 0) {
-                this.control.mouseDownR = 0;
+            this.world.controls.target = null;
+            if (this.world.controls.mouseDownR == 0) {
+                this.world.controls.mouseDownR = 0;
             }
         }
     }
 
 quickscoper(target) {
-        if (this.control.mouseDownL === 1) {
-            this.control.mouseDownL = 0;
-            this.control.mouseDownR = 0;
+        if (this.world.controls.mouseDownL === 1) {
+            this.world.controls.mouseDownL = 0;
+            this.world.controls.mouseDownR = 0;
             this.settings.scopingOut = true;
         }
 
@@ -401,33 +397,34 @@ quickscoper(target) {
         }
 		this.world.config.deltaMlt = 5;
 		this.lookAt(target);
-		if (this.control.mouseDownR !== 2) {
-			this.control.mouseDownR = 2;
+		if (this.world.controls.mouseDownR !== 2) {
+			this.world.controls.mouseDownR = 2;
 		}
         if (this.me.aimVal < 0.2) {
 			this.world.config.deltaMlt = 5;
-            this.control.mouseDownL ^= 1;
+            this.world.controls.mouseDownL ^= 1;
 			this.world.config.deltaMlt = 1;
         }
 
         return true;
     }
 
-    autoBhop(value) {
+   autoBhop(value) {
         if (!value) return;
         if (this.keyDown(" ")) { //Space
-            this.control.keys[this.control.jumpKey] = !this.control.keys[this.control.jumpKey];
+            this.world.controls.keys[this.world.controls.jumpKey] = !this.world.controls.keys[this.world.controls.jumpKey];
             if (value === 2) {
-                if (this.settings.isSliding) {
-                    this.inputs[8] = 1;
+                 if (this.settings.isSliding) {
+                    this.world.controls.keys[this.world.controls.crouchKey] = 1;
                     return;
                 }
                 if (this.me.yVel < -0.04 && this.me.canSlide) {
                     this.settings.isSliding = true;
                     setTimeout(() => {
-                        this.settings.isSliding = false;
-                    }, this.me.slideTimer);
-                    this.inputs[8] = 1;
+                    this.settings.isSliding = false;
+                        this.world.controls.keys[this.world.controls.crouchKey] = 0;
+                    }, 350);
+                    this.world.controls.keys[this.world.controls.crouchKey] = 1;
                 }
             }
         }
@@ -443,7 +440,10 @@ quickscoper(target) {
     wpnReload(force = false) {
         //(inputs[9] = me.ammos[me.weaponIndex] === 0);
         const ammoLeft = this.me.ammos[this.me.weaponIndex];
-        if (force || ammoLeft === 0) this.world.players.reload(this.me);
+        if (force || ammoLeft === 0) {
+            this.world.players.reload(this.me);
+            if (ammoLeft) this.world.players.endReload(this.me.weapon);
+        }
     }
 
      world2Screen(camera, pos3d, aY = 0) {
@@ -600,21 +600,41 @@ quickscoper(target) {
 		}
 	}
 }
-
+// based on skidlamer patching method
 function patchGame(source) {
+    window.GameScript = source;
     source = Utilities.toString().concat(source);
     const patches = new Map()
+    // replace obfuscated strings
+    .set("procInputs", [/igKRxJyx/gm, 'procInputs'])
+    .set("objInstances", [/eKoEYKcC/gm, 'objInstances'])
+    .set("isYou", [/OFnPTTpe/gm, 'isYou'])
+    .set("cnBSeen", [/lhYWIWew/gm, 'cnBSeen'])
+    .set("canSee", [/BwftfwWS/gm, 'canSee'])
+    .set("getD3D", [/OmPMwAzs/gm, 'getD3D'])
+    .set("getDistance", [/kwpNBTcj/gm, 'getDistance'])
+    .set("getXDire", [/SbPUccYE/gm, 'getXDire'])
+    .set("getDir", [/ujHYahTl/gm, 'getDir'])
+    .set("socket", [/eXZfoTjts/gm, 'socket'])
+    .set("mouseDownR", [/hhLaRzBY/gm, 'mouseDownR'])
+    .set("mouseDownL", [/sMTFGWrl/gm, 'mouseDownL'])
+    .set("pitchObject", [/vKPtJVFI/gm, 'pitchObject'])
+    .set("recoilAnimY", [/psKrGopm/gm, 'recoilAnimY'])
+
      .set("exports", [/(\['__CANCEL__']=.*?\(\w+,\w+,(\w+)\){)(let)/, '$1window.utilities=new Utilities();utilities.exports=$2;$3'])
      .set("controlView", [/(if\(this\['target']\){)/, '$1this.object.rotation.y=this.target.yD;this.pitchObject.rotation.x=this.target.xD;const half=Math.PI/2;this.yDr=Math.max(-half,Math.min(half,this.target.xD))%Math.PI;this.xDr=this.target.yD%Math.PI;'])
-     .set("control", [/(=this;this\['gamepad'])/, '=utilities.control$1'])
-     .set("procInputs", [/(this\[\'procInputs\'\]=function\((\w+),(\w+),(\w+),(\w+)\)\{)/, '$1utilities.onTick(this,$3,$2);'])
+     .set("Inputs", [/(!\w+\['moveLock']&&\w+\['tmpInpts']\['push']\((\w+)\))/, "utilities.inputs=$2,$1"])
+     .set("Update", [/(this\['update']=function\((\w+),(\w+)\){if\(this\['active']\){)/, '$1utilities.onTick(this,$2);'])
      .set("ui", [/(this,\w+={};this\['frustum'])/, 'utilities.ui=$1'])
      .set("fixHowler", [/(Howler\['orientation'](.+?)\)\),)/, ``])
      .set("clearRec", [/(if\(\w+\['save']\(\),\w+\['scale']\(\w+,\w+\),)\w+\['clearRect']\(0x0,0x0,\w+,\w+\),(\w+\['showDMG']\))/, '$1$2'])
      .set("onRender", [/((\w+)\['render']=function\((\w+,\w+,\w+,\w+,\w+)\){)/, '$1utilities.onRender($2,$3);'])
-     //.set("pInfo", [/(if\()(!\w+\['cnBSeen']\)continue;)/, '$1utilities.settings.espMode==1||utilities.settings.espMode==0&&$2'])
+     .set("pInfo", [/(if\((\w+)\['isYou']\|\|!\w+\['objInstances']\)continue;)/, 'if(utilities.settings.espMode==1||utilities.settings.espMode==0)continue;$1'])
+
      .set("wallhack", [/(\(((\w+))=this\['map']\['manager']\['objects']\[(\w+)]\))(.+?)\)/, '$1.penetrable&&$2.active)'])
      .set("socket", [/(new WebSocket)/, 'utilities.socket=$1'])
+     .set("No disconnect", [/\['send']\('rt'\)/, ""])
+
 
     for (const [name, item] of patches) {
         const patched = source.replace(item[0], item[1]);
@@ -628,11 +648,15 @@ function patchGame(source) {
     return source;
 }
 
-(function () {
-    var hideHook = (fn, oFn) => { fn.toString = oFn.toString.bind(oFn) };
-    const handler = { construct(target, args) { if (args.length == 2 && args[1].length >140000) { args[1] = patchGame(args[1]); } return new target(...args); } };
-    const original = self.Function;
-    self.Function = new Proxy(Function, handler);
-    hideHook(Function, original);
-})();
+const decode = TextDecoder.prototype.decode;
+TextDecoder.prototype.decode = function() {
+    var code = decode.apply(this, arguments);
+
+    if (code[0] === '!') {
+        code = patchGame(code);
+        TextDecoder.prototype.decode = decode;
+    }
+
+    return code;
+}
 // Script By THEGUY3ds pls dont steal
