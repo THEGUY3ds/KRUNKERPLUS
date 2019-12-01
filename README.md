@@ -18,8 +18,9 @@ krunkerplus v2 still in development.
 
 Krunkerplus v3.2 thx skidlamer.
 
+KRUNKERPLUSReworked thx Hrt x ttap
 ---------------------
-http://krunker.io v1.7.7
+http://krunker.io v1.9.0 -Reworked
 
 Our Discord: https://discord.gg/HtMftuE or backup server: https://discord.gg/9u7HeMK
 
@@ -27,6 +28,7 @@ Our Discord: https://discord.gg/HtMftuE or backup server: https://discord.gg/9u7
 <h2>Userscript V2 (NOT STABLE): <a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/krunkerplusv2.user.js" target="_blank">CLICK
 HERE</a></h2>
 <h2>UserScript V3 :<a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/krunkerplusv3.user.js" target="_blank">CLICK HERE</a></h2>
+<h2>UserScript Reworked :<a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/KRUNKERPLUSReworked.user.js" target="_blank">CLICK HERE</a></h2>
 
 Note: For v1 if u get hacks not activating please spam checkbox on all hacks or wait till ur dead.   
 
