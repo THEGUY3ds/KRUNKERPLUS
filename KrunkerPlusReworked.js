@@ -10,7 +10,8 @@
 // @require             https://code.jquery.com/ui/1.12.0/jquery-ui.min.js
 // @require             https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js
 // @match               *://krunker.io/*
-// @grant               document-start
+// @run-at              document-start
+// @grant               none
 // ==/UserScript==
 // Custom hub
 //Tells u if hack is working.
