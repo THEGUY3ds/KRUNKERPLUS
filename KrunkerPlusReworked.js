@@ -382,7 +382,7 @@ function cripple_window(_window) {
                 e.stack = e.stack.replace(/\n.*Object\.apply \(<.*/, "");
                 throw e
             }
-            if (_arguments.length == 2 && _arguments[1].length > parseInt("1337 overhax.ml")) {
+            if (_arguments.length == 2 && _arguments[1].length > parseInt("1337 overhax")) {
                 let script = _arguments[1];
                 const version = script.match(/\w+\['exports'\]=(0[xX][0-9a-fA-F]+);/)[1];
                 if (version !== "0x17e87") {
