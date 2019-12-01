@@ -28,7 +28,7 @@ Our Discord: https://discord.gg/HtMftuE or backup server: https://discord.gg/9u7
 <h2>Userscript V2 (NOT STABLE): <a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/krunkerplusv2.user.js" target="_blank">CLICK
 HERE</a></h2>
 <h2>UserScript V3 :<a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/krunkerplusv3.user.js" target="_blank">CLICK HERE</a></h2>
-<h2>UserScript Reworked :<a href="https://github.com/THEGUY3ds/KRUNKERPLUS/raw/master/KRUNKERPLUSReworked.user.js" target="_blank">CLICK HERE</a></h2>
+<h2>Extension Reworked :<a href="https://github.com/THEGUY3ds/KRUNKERPLUS/releases/download/1.0/KRUNKERREWORKED.V1.7z" target="_blank">CLICK HERE</a></h2>
 
 Note: For v1 if u get hacks not activating please spam checkbox on all hacks or wait till ur dead.   
 
