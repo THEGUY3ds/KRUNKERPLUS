@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name                Krunker plus Reworked
+// @name                Krunker plus Reworked Fixed
 // @namespace           http://overhax.ml
 // @author              OVERHAX | THEGUY3ds x Hrt x ttap
 // @description         Based on wheelchair :)
-// @version             v3.6
+// @version             v3.7
 // @supportURL          http://overhax.ml/krunkerPlus
 // @icon                https://www.google.com/s2/favicons?domain=krunker.io
 // @require             http://code.jquery.com/jquery-3.3.1.min.js
@@ -39,8 +39,8 @@ document.body.appendChild(d);
 // Background
 //document.getElementById("instructionHolder").style.backgroundImage = "url('https://i.pinimg.com/originals/8a/ce/a9/8acea9261c892e75b0651de1d4f4e0e1.jpg')";
 // Chat messege
-document.getElementById('voiceDisplay').innerHTML = '<div class="menuDebugInfo" id="zaresplusisaskidd"><span style="color:#DAE110">Working on 1.9.0<span class="chatMsg">| OVERHAX KRUNKERPLUS REWORKED <span class="chatMsg"><span style="color:#F18938"> | OVERHAX.ML</span></span></span><i id="voiceIcon" class="material-icons" style="color:#fff;font-size:40px">mic</i> <div id="recTimer">[V]</div></div></div></div>';
-//document.getElementById('chatList').innerHTML = '<div class="chatItem"><span style="color:#DAE110">Working on 1.9.0<span class="chatMsg">| OVERHAX KRUNKERPLUS REWORKED <span class="chatMsg"><span style="color:#F18938"> | OVERHAX.ML</span></span></span></div>';
+document.getElementById('voiceDisplay').innerHTML = '<div class="menuDebugInfo" id="zaresplusisaskidd"><span style="color:#DAE110">Working on 1.9.2<span class="chatMsg">| OVERHAX KRUNKERPLUS REWORKED <span class="chatMsg"><span style="color:#F18938"> | OVERHAX.ML</span></span></span><i id="voiceIcon" class="material-icons" style="color:#fff;font-size:40px">mic</i> <div id="recTimer">[V]</div></div></div></div>';
+//document.getElementById('chatList').innerHTML = '<div class="chatItem"><span style="color:#DAE110">Working on 1.9.2<span class="chatMsg">| OVERHAX KRUNKERPLUS REWORKED <span class="chatMsg"><span style="color:#F18938"> | OVERHAX.ML</span></span></span></div>';
 //Fps counter
 javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
 //Full screen
@@ -70,387 +70,390 @@ if (document.fullscreenEnabled) {
         });
     });
 };
-//end Zareplusx Is a SKID
-cripple_window(window.parent);
+//end
 
-function cripple_window(_window) {
-    if (!_window) {
-        return
+let shared_state = new Map(Object.entries({functions_to_hide: new WeakMap(), strings_to_hide: [], hidden_globals: [], init: false}));
+
+let invisible_define = function(obj, key, value) {
+    shared_state.get('hidden_globals').push(key);
+    Object.defineProperty(obj, key, {
+        enumberable: false,
+        configurable: false,
+        writable: true,
+        value: value
+    });
+};
+
+let conceal_function = function(original_Function, hook_Function) {
+    shared_state.get('functions_to_hide').set(hook_Function, original_Function);
+};
+
+let conceal_string = function(original_string, hook_string) {
+    shared_state.get('strings_to_hide').push({from: new RegExp(hook_string.replace(/([\[|\]|\(|\)|\*|\\|\.|\+])/g,'\\$1'), 'g'), to: original_string});
+};
+
+const original_toString = Function.prototype.toString;
+let hook_toString = new Proxy(original_toString, {
+    apply: function(target, _this, _arguments) {
+        try {
+            var ret = Function.prototype.apply.apply(target, [_this, _arguments]);
+        } catch (e) {
+            // modify stack trace to hide proxy
+            e.stack = e.stack.replace(/\n.*Object\.apply \(<.*/, '');
+            throw e;
+        }
+
+        let lookup_fn = shared_state.get('functions_to_hide').get(_this);
+        if (lookup_fn) {
+            return Function.prototype.apply.apply(target, [lookup_fn, _arguments]);
+        }
+
+        for (var i = 0; i < shared_state.get('strings_to_hide').length; i++) {
+            ret = ret.replace(shared_state.get('strings_to_hide')[i].from, shared_state.get('strings_to_hide')[i].to);
+        }
+        return ret;
     }
-    let shared_state = new Map(Object.entries({
-        functions_to_hide: new WeakMap,
-        strings_to_hide: [],
-        hidden_globals: [],
-        init: false
-    }));
-    let invisible_define = function(obj, key, value) {
-        shared_state.get("hidden_globals").push(key);
-        Object.defineProperty(obj, key, {
-            enumberable: false,
-            configurable: false,
-            writable: true,
-            value: value
-        })
-    };
-    const master_key = "overhax";
-    if (!_window.top[master_key]) {
-        invisible_define(_window.top, master_key, shared_state)
-    } else {
-        shared_state = _window.top[master_key]
+});
+Function.prototype.toString = hook_toString;
+conceal_function(original_toString, hook_toString);
+//
+
+var distance, cnBSeen, canSee, pchObjc, objInstances, isYou, recoilAnimY, mouseDownL, mouseDownR, inputs, getWorldPosition;
+console.json = object => console.log(JSON.stringify(object, undefined, 2));
+const defined = object => typeof object !== "undefined";
+
+const original_encode = TextEncoder.prototype.encode;
+let hook_encode = new Proxy(original_encode, {
+    apply: function(target, _this, _arguments) {
+        let game = false;
+        try {
+            if (_arguments[0].length > 1000) {
+                cnBSeen = _arguments[0].match(/this\['recon']=!0x1,this\['(\w+)']=!0x1/)[1];
+                canSee = _arguments[0].match(/,this\['(\w+)'\]=function\(\w+,\w+,\w+,\w+,\w+\){if\(!\w+\)return!\w+;/)[1];
+                pchObjc = _arguments[0].match(/\(\w+,\w+,\w+\),this\['(\w+)'\]=new \w+\['\w+'\]\(\)/)[1];
+                objInstances = _arguments[0].match(/\[\w+\]\['\w+'\]=!\w+,this\['\w+'\]\[\w+\]\['\w+'\]&&\(this\['\w+'\]\[\w+\]\['(\w+)'\]\['\w+'\]=!\w+/)[1];
+                isYou = _arguments[0].match(/,this\['\w+'\]=!\w+,this\['\w+'\]=!\w+,this\['(\w+)'\]=\w+,this\['\w+'\]\['length'\]=\w+,this\[/)[1];
+                recoilAnimY = _arguments[0].match(/\w*1,this\['\w+'\]=\w*0,this\['\w+'\]=\w*0,this\['\w+'\]=\w*1,this\['\w+'\]=\w*1,this\['\w+'\]=\w*0,this\['\w+'\]=\w*0,this\['(\w+)'\]=\w*0,this\['\w+'\]=\w*0,this\['\w+'\]=\w*0,this\['\w+'\]=\w*0,/)[1];
+                mouseDownL = _arguments[0].match(/this\['\w+'\]=function\(\){this\['(\w+)'\]=\w*0,this\['(\w+)'\]=\w*0,this\['\w+'\]={}/)[1];
+                mouseDownR = _arguments[0].match(/this\['\w+'\]=function\(\){this\['(\w+)'\]=\w*0,this\['(\w+)'\]=\w*0,this\['\w+'\]={}/)[2];
+                inputs = _arguments[0].match(/\(\w+,\w*1\)\),\w+\['\w+'\]=\w*0,\w+\['\w+'\]=\w*0,!(\w+)\['\w+'\]&&\w+\['\w+'\]\['push'\]\((\w+)\),(\w+)\['\w+'\]/)[2];
+                getWorldPosition = _arguments[0].match(/\['camera']\['(\w+)']\(\);if/)[1]
+
+                game = true;
+            }
+
+        } catch (e) {
+            // modify stack trace to hide proxy
+            e.stack = e.stack.replace(/\n.*Object\.apply \(<.*/, '');
+            throw e;
+        }
+        if (game) TextEncoder.prototype.encode = original_encode;
+
+        return Function.prototype.apply.apply(target, [_this, _arguments]);
     }
-    const original_toString = _window.Function.prototype.toString;
-    let hook_toString = new Proxy(original_toString, {
-        apply: function(target, _this, _arguments) {
-            try {
-                var ret = Function.prototype.apply.apply(target, [_this, _arguments])
-            } catch (e) {
-                e.stack = e.stack.replace(/\n.*Object\.apply \(<.*/, "");
-                throw e
-            }
-            let lookup_fn = shared_state.get("functions_to_hide").get(_this);
-            if (lookup_fn) {
-                return Function.prototype.apply.apply(target, [lookup_fn, _arguments])
-            }
-            for (var i = 0; i < shared_state.get("strings_to_hide").length; i++) {
-                ret = ret.replace(shared_state.get("strings_to_hide")[i].from, shared_state.get("strings_to_hide")[i].to)
-            }
-            return ret
-        }
-    });
-    _window.Function.prototype.toString = hook_toString;
-    let conceal_function = function(original_Function, hook_Function) {
-        shared_state.get("functions_to_hide").set(hook_Function, original_Function)
+}); TextEncoder.prototype.encode = hook_encode;
+conceal_function(original_encode, hook_encode);
+
+let render = function() {
+
+    //DEFINES
+    const args = arguments.callee.caller.caller.arguments;
+    const me = args[3];
+    if (!me) return;
+    const scale = args[0];
+    const world = args[1];
+    const renderer = args[2];
+    const scale2 = args[4];
+    const canvas = document.getElementById('game-overlay');
+    const ctx = canvas.getContext("2d");
+    const consts = {
+        "cameraHeight": 1.5,
+        "playerHeight": 11,
+        "cameraHeight": 1.5,
+        "headScale": 2,
+        "crouchDst": 3,
+        "camChaseTrn": 0.0022,
+        "camChaseSpd": 0.0012,
+        "camChaseSen": 0.2,
+        "camChaseDst": 24,
+        "recoilMlt": 0.3,
+        "nameOffset": 0.6,
+        "nameOffsetHat": 0.8,
     };
-    let conceal_string = function(original_string, hook_string) {
-        shared_state.get("strings_to_hide").push({
-            from: new RegExp(hook_string.replace(/([\[|\]|\(|\)|\*|\\|\.|\+])/g, "\\$1"), "g"),
-            to: original_string
-        })
-    };
-    const original_getOwnPropertyDescriptors = _window.Object.getOwnPropertyDescriptors;
-    let hook_getOwnPropertyDescriptors = new Proxy(original_getOwnPropertyDescriptors, {
-        apply: function(target, _this, _arguments) {
-            try {
-                var descriptors = Function.prototype.apply.apply(target, [_this, _arguments])
-            } catch (e) {
-                e.stack = e.stack.replace(/\n.*Object\.apply \(<.*/, "");
-                throw e
+    const fonts = {
+        ssBig: '30px\x20Sans-serif',
+        ssSmall: '20px\x20Sans-serif',
+        gmBig: '30px\x20GameFont',
+        gmSmall: '20px\x20GameFont'
+    }
+    console.dir(window)
+    let fullWidth = window.innerWidth;
+    let fullHeight = window.innerHeight;
+    let scaledWidth = canvas.width / scale;
+    let scaledHeight = canvas.height / scale;
+    let camPos = renderer['camera'][getWorldPosition]();
+    const Pi = Math.PI / 2;
+    const PI2 = 2 * Math.PI;
+    let controls = world.controls;
+    let players = world.players.list;
+    let entities = players.filter(x => { return x.active && !x[isYou] });
+
+
+     //FUNCTIONS
+     let getDistance3D = (fromX, fromY, fromZ, toX, toY, toZ) => {
+        var distX = fromX - toX,
+            distY = fromY - toY,
+            distZ = fromZ - toZ;
+        return Math.sqrt(distX * distX + distY * distY + distZ * distZ);
+    }
+
+    let getDistance = (player1, player2) => {
+        return getDistance3D(player1.x, player1.y, player1.z, player2.x, player2.y, player2.z);
+    }
+
+    let getDirection = (fromZ, fromX, toZ, toX) => {
+        return Math.atan2(fromX - toX, fromZ - toZ);
+    }
+
+    let getXDir = (fromX, fromY, fromZ, toX, toY, toZ) => {
+        var dirY = Math.abs(fromY - toY),
+            dist = getDistance3D(fromX, fromY, fromZ, toX, toY, toZ);
+        return Math.asin(dirY / dist) * (fromY > toY ? -1 : 1);
+    }
+
+    let getAngleDist = (start, end) => {
+        return Math.atan2(Math.sin(end - start), Math.cos(start - end));
+    }
+
+    let get = (entity, string) => {
+        if (defined(entity) && entity && entity.active) {
+            switch (string) {
+                case 'isYou': return entity[isYou];
+                case 'objInstances': return entity[objInstances];
+                case 'inView': return null == world[canSee](me, entity.x, entity.y - entity.crouchVal * consts.crouchDst, entity.z) ;//|| entity[cnBSeen];
+                case 'isFriendly': return (me && me.team ? me.team : me.spectating ? 0x1 : 0x0) == entity.team;
+                case 'recoilAnimY': return entity[recoilAnimY];
             }
-            for (var i = 0; i < shared_state.get("hidden_globals").length; i++) {
-                delete descriptors[shared_state.get("hidden_globals")[i]]
-            }
-            return descriptors
         }
-    });
-    _window.Object.getOwnPropertyDescriptors = hook_getOwnPropertyDescriptors;
-    let drawVisuals = function() {};
-    const original_clearRect = _window.CanvasRenderingContext2D.prototype.clearRect;
-    let hook_clearRect = new Proxy(original_clearRect, {
-        apply: function(target, _this, _arguments) {
-            try {
-                var ret = Function.prototype.apply.apply(target, [_this, _arguments])
-            } catch (e) {
-                e.stack = e.stack.replace(/\n.*Object\.apply \(<.*/, "");
-                throw e
+        return null;
+    }
+
+    let getTarget = () => {
+        if (!defined (distance)) distance = Infinity;
+        for (const entity of players.filter(x => { return x.active && !get(x,"isYou") && get(x,"inView") && !get(x,"isFriendly") && x.health > 0})) {
+            if (defined(entity[objInstances])) {
+                const entityPos = entity[objInstances].position;
+                if (renderer.frustum.containsPoint(entityPos)) {
+                    const dist = entityPos.distanceTo(me);
+                    if (dist <= distance) {
+                        me.distance = dist;
+                        return entity;
+                    }
+                }
             }
-            drawVisuals(_this);
-            return ret
         }
-    });
-    _window.CanvasRenderingContext2D.prototype.clearRect = hook_clearRect;
-    const original_open = _window.open;
-    let hook_open = new Proxy(original_open, {
-        apply: function(target, _this, _arguments) {
-            try {
-                let ret = Function.prototype.apply.apply(target, [_this, _arguments])
-            } catch (e) {
-                e.stack = e.stack.replace(/\n.*Object\.apply \(<.*/, "");
-                throw e
-            }
-            return null
+        distance = Infinity;
+        return null;
+    }
+
+    let camLookAt = (target) => {
+        if (!defined(controls) || target === null || (target.x + target.y + target.z2) == 0) return void(controls.target = null);
+        let offset1 = ((consts.playerHeight - consts.cameraHeight) - (target.crouchVal * consts.crouchDst));
+        let offset2 = consts.playerHeight - consts.headScale / 2 - target.crouchVal * consts.crouchDst;
+        let recoil = (get(me, "recoilAnimY") * consts.recoilMlt) * 25;
+        let xdir = getXDir(controls.object.position.x, controls.object.position.y, controls.object.position.z, target.x, (target.y + offset1) - recoil, target.z);
+        let ydir = getDirection(controls.object.position.z, controls.object.position.x, target.z, target.x);
+        controls.target = {
+            xD:xdir,
+            yD: ydir,
+            x: target.x + consts.camChaseDst * Math.sin(ydir) * Math.cos(xdir),
+            y: target.y - consts.camChaseDst * Math.sin(xdir),
+            z: target.z + consts.camChaseDst * Math.cos(ydir) * Math.cos(xdir)
         }
-    });
-    _window.open = hook_open;
-    if (!shared_state.get("hax")) {
-        shared_state.set("hax", function(me, inputs, world, consts, math) {
-            let controls = world.controls;
-            if (controls.scrollDelta) {
-                controls.skipScroll = controls.scrollToSwap;
-                if (!controls.scrollToSwap) {
-                    controls.fakeKey(2e4, 1)
-                }
-            }
-            controls.scrollDelta = 0;
-            controls.wSwap = 0;
-            const playerHeight = 11;
-            const crouchDst = 3;
-            const headScale = 2;
-            const hitBoxPad = 1;
-            const armScale = 1.3;
-            const chestWidth = 2.6;
-            const armInset = -.1;
-            const playerScale = (2 * armScale + chestWidth + armInset) / 2;
-            const SHOOT = 5,
-                SCOPE = 6,
-                xDr = 3,
-                yDr = 2,
-                JUMP = 7,
-                CROUCH = 8;
-            const PI2 = Math.PI * 2;
-            let isEnemy = function(player) {
-                return !me.team || player.team != me.team
-            };
-            let canHit = function(player) {
-                return null == world[canSee](me, player.x3, player.y3 - player.crouchVal * crouchDst, player.z3)
-            };
-            let normaliseYaw = function(yaw) {
-                return (yaw % PI2 + PI2) % PI2
-            };
-            let getDir = function(a, b, c, d) {
-                return Math.atan2(b - d, a - c)
-            };
-            let getD3D = function(a, b, c, d, e, f) {
-                let g = a - d,
-                    h = b - e,
-                    i = c - f;
-                return Math.sqrt(g * g + h * h + i * i)
-            };
-            let getXDire = function(a, b, c, d, e, f) {
-                let g = Math.abs(b - e),
-                    h = getD3D(a, b, c, d, e, f);
-                return Math.asin(g / h) * (b > e ? -1 : 1)
-            };
-            let dAngleTo = function(x, y, z) {
-                let ty = normaliseYaw(getDir(controls.object.position.z, controls.object.position.x, z, x));
-                let tx = getXDire(controls.object.position.x, controls.object.position.y, controls.object.position.z, x, y, z);
-                let oy = normaliseYaw(controls.object.rotation.y);
-                let ox = controls[pchObjc].rotation.x;
-                let dYaw = Math.min(Math.abs(ty - oy), Math.abs(ty - oy - PI2), Math.abs(ty - oy + PI2));
-                let dPitch = tx - ox;
-                return Math.hypot(dYaw, dPitch)
-            };
-            let calcAngleTo = function(player) {
-                return dAngleTo(player.x3, player.y3 + playerHeight - (headScale + hitBoxPad) / 2 - player.crouchVal * crouchDst, player.z3)
-            };
-            let calcDistanceTo = function(player) {
-                return getD3D(player.x3, player.y3, player.z3, me.x, me.y, me.z)
-            };
-            let isCloseEnough = function(player) {
-                let distance = calcDistanceTo(player);
-                return me.weapon.range >= distance && ("Shotgun" != me.weapon.name || distance < 70) && ("Akimbo Uzi" != me.weapon.name || distance < 100)
-            };
-            let haveAmmo = function() {
-                return !(me.ammos[me.weaponIndex] !== undefined && me.ammos[me.weaponIndex] == 0)
-            };
-            let closest = null,
-                closestAngle = Infinity;
-            let players = world.players.list;
-            for (var i = 0; me.active && i < players.length; i++) {
-                let e = players[i];
-                if (e[isYou] || !e.active || !e[objInstances] || !isEnemy(e)) {
-                    continue
-                }
-                e.x3 = e.x;
-                e.y3 = e.y;
-                e.z3 = e.z;
-                if (!isCloseEnough(e) || !canHit(e)) {
-                    continue
-                }
-                let angle = calcAngleTo(e);
-                if (angle < closestAngle) {
-                    closestAngle = angle;
-                    closest = e
-                }
-            }
-            let ty = controls.object.rotation.y,
-                tx = controls[pchObjc].rotation.x;
-            if (closest) {
-                let target = closest;
-                let y = target.y3 + playerHeight - headScale / 2 - target.crouchVal * crouchDst;
-                if (me.weapon.nAuto && me.didShoot) {
-                    inputs[SHOOT] = 0
-                } else if (!me.aimVal) {
-                    inputs[SHOOT] = 1;
-                    inputs[SCOPE] = 1
-                } else {
-                    inputs[SCOPE] = 1
-                }
-                ty = getDir(controls.object.position.z, controls.object.position.x, target.z3, target.x3);
-                tx = getXDire(controls.object.position.x, controls.object.position.y, controls.object.position.z, target.x3, y, target.z3);
-                tx -= .3 * me[recoilAnimY]
-            } else {
-                inputs[SHOOT] = controls[mouseDownL];
-                inputs[SCOPE] = controls[mouseDownR]
-            }
-            inputs[xDr] = +(tx % PI2).toFixed(3);
-            inputs[yDr] = +(ty % PI2).toFixed(3);
-            controls.keys[controls.reloadKey] = !haveAmmo() * 1;
-            inputs[JUMP] = (controls.keys[controls.jumpKey] && !me.didJump) * 1;
-            if (!shared_state.get("init")) {
-                shared_state.set("init", true);
-                drawVisuals = function(c) {
-                    let scalingFactor = arguments.callee.caller.caller.arguments[0];
-                    let perspective = arguments.callee.caller.caller.arguments[2];
-                    let scaledWidth = c.canvas.width / scalingFactor;
-                    let scaledHeight = c.canvas.height / scalingFactor;
-                    let worldPosition = perspective.camera.getWorldPosition();
-                    for (var i = 0; i < world.players.list.length; i++) {
-                        let player = world.players.list[i];
-                        let e = players[i];
-                        if (e[isYou] || !e.active || !e[objInstances] || !isEnemy(e)) {
-                            continue
-                        }
-                        let xmin = Infinity;
-                        let xmax = -Infinity;
-                        let ymin = Infinity;
-                        let ymax = -Infinity;
-                        let br = false;
-                        for (var j = -1; !br && j < 2; j += 2) {
-                            for (var k = -1; !br && k < 2; k += 2) {
-                                for (var l = 0; !br && l < 2; l++) {
-                                    let position = e[objInstances].position.clone();
-                                    position.x += j * playerScale;
-                                    position.z += k * playerScale;
-                                    position.y += l * (playerHeight - e.crouchVal * crouchDst);
-                                    if (!perspective.frustum.containsPoint(position)) {
-                                        br = true;
-                                        break
-                                    }
-                                    position.project(perspective.camera);
-                                    xmin = Math.min(xmin, position.x);
-                                    xmax = Math.max(xmax, position.x);
-                                    ymin = Math.min(ymin, position.y);
-                                    ymax = Math.max(ymax, position.y)
-                                }
-                            }
-                        }
-                        if (br) {
-                            continue
-                        }
-                        xmin = (xmin + 1) / 2;
-                        ymin = (ymin + 1) / 2;
-                        xmax = (xmax + 1) / 2;
-                        ymax = (ymax + 1) / 2;
-                        c.save();
-                        const original_strokeStyle = c.strokeStyle;
-                        const original_lineWidth = c.lineWidth;
-                        const original_font = c.font;
-                        const original_fillStyle = c.fillStyle;
-                        c.lineWidth = 5;
-                        c.strokeStyle = "rgba(249, 117, 0)";
-                        let distanceScale = Math.max(.3, 1 - getD3D(worldPosition.x, worldPosition.y, worldPosition.z, e.x, e.y, e.z) / 600);
-                        c.scale(distanceScale, distanceScale);
-                        let xScale = scaledWidth / distanceScale;
-                        let yScale = scaledHeight / distanceScale;
-                        c.beginPath();
-                        ymin = yScale * (1 - ymin);
-                        ymax = yScale * (1 - ymax);
-                        xmin = xScale * xmin;
-                        xmax = xScale * xmax;
-                        c.moveTo(xmin, ymin);
-                        c.lineTo(xmin, ymax);
-                        c.lineTo(xmax, ymax);
-                        c.lineTo(xmax, ymin);
-                        c.lineTo(xmin, ymin);
-                        c.stroke();
-                        c.fillStyle = "rgba(249, 238, 0)";
-                        let barMaxHeight = ymax - ymin;
-                        c.fillRect(xmin - 7, ymin, -10, barMaxHeight);
-                        c.fillStyle = "F90000";
-                        c.fillRect(xmin - 7, ymin, -10, barMaxHeight * (e.health / e.maxHealth));
-                        c.font = "60px Comic Sans MS";
-                        c.fillStyle = "white";
-                        c.strokeStyle = "black";
-                        c.lineWidth = 1;
-                        let x = xmax + 7;
-                        let y = ymax;
-                        c.fillText(e.name, x, y);
-                        c.strokeText(e.name, x, y);
-                        c.font = "45px Comic Sans MS";
-                        y += 35;
-                        c.fillText(e.weapon.name, x, y);
-                        c.strokeText(e.weapon.name, x, y);
-                        y += 35;
-                        c.fillText(e.health + " HP", x, y);
-                        c.strokeText(e.health + " HP", x, y);
-                        c.strokeStyle = original_strokeStyle;
-                        c.lineWidth = original_lineWidth;
-                        c.font = original_font;
-                        c.fillStyle = original_fillStyle;
-                        c.restore();
-                        if (e.legMeshes[0]) {
-                            let material = e.legMeshes[0].material;
-                            material.alphaTest = 1;
+    }
+
+    let world2Screen = (camera, position) => {
+        let pos = position.clone();
+        pos.project(camera);
+        pos.x = (pos.x + 1) / 2;
+        pos.y = (-pos.y + 1) / 2;
+        pos.x *= scaledWidth;
+        pos.y *= scaledHeight;
+        return pos;
+    }
+
+    let pixelTranslate = (ctx, x, y) => {
+        ctx.translate(~~x, ~~y);
+    }
+
+    let pixelDifference = (pos1, Pos2, multi) => {
+        const hDiff = ~~(pos1.y - Pos2.y);
+        return [hDiff, ~~(hDiff * multi)]
+    }
+
+    let text = (txt, font, color, x, y) => {
+        ctx.save();
+        pixelTranslate(ctx, x, y);
+        ctx.fillStyle = color;
+        ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
+        ctx.font = font;
+        ctx.lineWidth = 1;
+        ctx.strokeText(txt, 0, 0);
+        ctx.fillText(txt, 0, 0);
+        ctx.restore();
+    }
+
+    let rect = (x, y, ox, oy, w, h, color, fill) => {
+        ctx.save();
+        pixelTranslate(ctx, x, y);
+        ctx.beginPath();
+        fill ? ctx.fillStyle = color : ctx.strokeStyle = color;
+        ctx.rect(ox, oy, w, h);
+        fill ? ctx.fill() : ctx.stroke();
+        ctx.closePath();
+        ctx.restore();
+    }
+
+    let line = (x1, y1, x2, y2, lW, sS) => {
+        ctx.save();
+        ctx.lineWidth = lW + 2;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = "rgba(0, 0, 0, 0.25)";
+        ctx.stroke();
+        ctx.lineWidth = lW;
+        ctx.strokeStyle = sS;
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    let image = (x, y, img, ox, oy, w, h) => {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.beginPath();
+        ctx.drawImage(img, ox, oy, w, h);
+        ctx.closePath();
+        ctx.restore();
+    }
+
+    let getTextMeasurements = (arr) => {
+        for (let i = 0; i < arr.length; i++) {
+            arr[i] = ~~ctx.measureText(arr[i]).width;
+        }
+        return arr;
+    }
+
+    let byte2Hex = (n) => {
+        var chars = "0123456789ABCDEF";
+        return String(chars.substr((n >> 4) & 0x0F,1)) + chars.substr(n & 0x0F,1);
+    }
+
+    let rgba2hex = (r,g,b,a = 255) => ("#").concat(byte2Hex(r),byte2Hex(g),byte2Hex(b),byte2Hex(a));
+
+    //ONTICK STUFF
+
+     // target update
+     if (defined(controls.target) && controls.target !== null) {
+        controls.object.rotation.y = controls.target.yD;
+        controls[pchObjc].rotation.x = controls.target.xD;
+        controls[pchObjc].rotation.x = Math.max(-Pi, Math.min(Pi, controls[pchObjc].rotation.x));
+        controls.yDr = controls[pchObjc].rotation.x % Math.PI;
+        controls.xDr = controls.object.rotation.y % Math.PI;
+    }  else controls.target = null;
+
+    //aim assist
+    const target = getTarget();
+    if (target) {
+        if (controls[mouseDownR] == 1) {
+            camLookAt(target);
+        }
+    }
+    else {
+        if (controls.target) camLookAt(null);
+    }
+
+    //auto reload - they have crypted the me.ammos as well have to find this one
+    if (defined(me.ammos)) {
+        const ammoLeft = me.ammos[me.weaponIndex];
+        if (ammoLeft === 0) {
+            players.reload(me);
+            if (ammoLeft) players.endReload(me.weapon);
+        }
+    }
+    //ESP / Chams
+    entities.map((entity, index, array)=> {
+        if (defined(entity[objInstances])) {
+/*
+            let isFriendly = get(entity, 'isFriendly');
+            let teamCol = isFriendly ? '#44AAFF' : '#FF4444';
+
+            let entityPos = entity[objInstances].position;
+            if (renderer.frustum.containsPoint(entityPos)) {
+                let entitynamePos = entityPos.clone().setY(entityPos.y + (consts.playerHeight + (0x0 <= entity.hatIndex ? consts.nameOffsetHat : 0) + consts.nameOffset - entity.crouchVal * consts.crouchDst));
+                let entityScrPosName = entitynamePos.clone();
+                let playerScaled = Math.max(0.3, 1 - camPos.distanceTo(entityScrPosName) / 600);
+                let entityScrPosBase = world2Screen(renderer.camera, entityPos);
+                let entityScrPosHead = world2Screen(renderer.camera, entityPos.setY(entityPos.y + consts.playerHeight - entity.crouchVal * consts.crouchDst));
+                let entityScrPxlDiff = pixelDifference(entityScrPosBase, entityScrPosHead, 0.6);
+                //2d
+                //rect(entityScrPosHead.x - entityScrPxlDiff[1] / 2, entityScrPosHead.y, 0, 0, entityScrPxlDiff[1], entityScrPxlDiff[0], teamCol, false);
+
+                //Tracers
+                //line(fullWidth / 2, fullHeight - (fullHeight - scaledHeight), entityScrPosBase.x, entityScrPosBase.y, 2.5, teamCol);
+*/
+                //Chams
+                entity[cnBSeen] = true;
+                for (let i = 0; i < entity[objInstances].children.length; i++) {
+                    const object3d = entity[objInstances].children[i];
+                    for (let j = 0; j < object3d.children.length; j++) {
+                        const mesh = object3d.children[j];
+                        if (mesh && mesh.type == "Mesh") {
+                            const material = mesh.material;
                             material.depthTest = false;
                             material.fog = false;
-                            material.emissive.g = 1;
-                            material.wireframe = false
+                            material.emissive.r = 1;
+                            material.colorWrite = true;
+                            material.transparent = true;
+                            material.opacity = 1.0;
+                            //material.needsUpdate = true;
+                            //material.wireframe = !canHit(entity);
                         }
                     }
                 }
             }
-        })
-    }
-    const handler = {
-        apply: function(target, _this, _arguments) {
-            try {
-                var original_fn = Function.prototype.apply.apply(target, [_this, _arguments])
-            } catch (e) {
-                e.stack = e.stack.replace(/\n.*Object\.apply \(<.*/, "");
-                throw e
-            }
-            if (_arguments.length == 2 && _arguments[1].length > parseInt("1337 overhax")) {
-                let script = _arguments[1];
-                const version = script.match(/\w+\['exports'\]=(0[xX][0-9a-fA-F]+);/)[1];
-                if (version !== "0x17e87") {
-                    _window[atob("ZG9jdW1lbnQ=")][atob("d3JpdGU=")](atob("VmVyc2lvbiBtaXNzbWF0Y2gg") + version);
-                    _window[atob("bG9jYX" + "Rpb24" + "=")][atob("aHJ" + "lZg=" + "=")] = atob("aHR0cHM6" + "Ly9naXRodWIuY2" + "9tL2hydC93aGVlb" + "GNoYWly")
-                }
-                window["canSee"] = script.match(/,this\['(\w+)'\]=function\(\w+,\w+,\w+,\w+,\w+\){if\(!\w+\)return!\w+;/)[1];
-                window["pchObjc"] = script.match(/\(\w+,\w+,\w+\),this\['(\w+)'\]=new \w+\['\w+'\]\(\)/)[1];
-                window["objInstances"] = script.match(/\[\w+\]\['\w+'\]=!\w+,this\['\w+'\]\[\w+\]\['\w+'\]&&\(this\['\w+'\]\[\w+\]\['(\w+)'\]\['\w+'\]=!\w+/)[1];
-                window["isYou"] = script.match(/,this\['\w+'\]=!\w+,this\['\w+'\]=!\w+,this\['(\w+)'\]=\w+,this\['\w+'\]\['length'\]=\w+,this\[/)[1];
-                window["recoilAnimY"] = script.match(/\w*1,this\['\w+'\]=\w*0,this\['\w+'\]=\w*0,this\['\w+'\]=\w*1,this\['\w+'\]=\w*1,this\['\w+'\]=\w*0,this\['\w+'\]=\w*0,this\['(\w+)'\]=\w*0,this\['\w+'\]=\w*0,this\['\w+'\]=\w*0,this\['\w+'\]=\w*0,/)[1];
-                window["mouseDownL"] = script.match(/this\['\w+'\]=function\(\){this\['(\w+)'\]=\w*0,this\['(\w+)'\]=\w*0,this\['\w+'\]={}/)[1];
-                window["mouseDownR"] = script.match(/this\['\w+'\]=function\(\){this\['(\w+)'\]=\w*0,this\['(\w+)'\]=\w*0,this\['\w+'\]={}/)[2];
-                const inputs = script.match(/\(\w+,\w*1\)\),\w+\['\w+'\]=\w*0,\w+\['\w+'\]=\w*0,!(\w+)\['\w+'\]&&\w+\['\w+'\]\['push'\]\((\w+)\),(\w+)\['\w+'\]/)[2];
-                const world = script.match(/\(\w+,\w*1\)\),\w+\['\w+'\]=\w*0,\w+\['\w+'\]=\w*0,!(\w+)\['\w+'\]&&\w+\['\w+'\]\['push'\]\((\w+)\),(\w+)\['\w+'\]/)[1];
-                const consts = script.match(/\w+\['\w+'\]\),\w+\['\w+'\]\(\w+\['\w+'\],\w+\['\w+'\]\+\w+\['\w+'\]\*(\w+)/)[1];
-                const me = script.match(/\(\w+,\w*1\)\),\w+\['\w+'\]=\w*0,\w+\['\w+'\]=\w*0,!(\w+)\['\w+'\]&&\w+\['\w+'\]\['push'\]\((\w+)\),(\w+)\['\w+'\]/)[3];
-                const math = script.match(/\\x20\-50\%\)\\x20rotate\('\+\((\w+)\['\w+'\]\(\w+\[\w+\]\['\w+'\]/)[1];
-                const code_to_overwrite = script.match(/(\w+\['\w+'\]&&\(\w+\['\w+'\]=\w+\['\w+'\],!\w+\['\w+'\]&&\w+\['\w+'\]\(\w+,\w*1\)\),\w+\['\w+'\]=\w*0,\w+\['\w+'\]=\w*0),!\w+\['\w+'\]&&\w+\['\w+'\]\['push'\]\(\w+\),\w+\['\w+'\]\(\w+,\w+,!\w*1,\w+\['\w+'\]\)/)[1];
-                const haxPax = [me, inputs, world, consts, math].toString();
-                let call_hax = `top['` + master_key + `'].get('hax')(` + haxPax + `)`;
-                if (call_hax.length + 4 > code_to_overwrite.length) {
-                    throw "KRUNKERPLUS REWORKED: target function too small " + [call_hax.length, code_to_overwrite.length]
-                }
-                let whitespaces = code_to_overwrite.match(/\s/g);
-                for (var i = 0; i < whitespaces && whitespaces.length; i++) {
-                    call_hax += whitespaces[i]
-                }
-                call_hax += "  ";
-                while (call_hax.length < code_to_overwrite.length - 2) {
-                    call_hax += " "
-                }
-                call_hax += "  ";
-                script = script.replace(code_to_overwrite, call_hax);
-                conceal_string(code_to_overwrite, call_hax);
-                const original_script = _arguments[1];
-                _arguments[1] = script;
-                let mod_fn = Function.prototype.apply.apply(target, [_this, _arguments]);
-                _arguments[1] = original_script;
-                conceal_function(original_fn, mod_fn);
-                return mod_fn
-            }
-            return original_fn
+        //}
+    });
+};
+const clearRect = CanvasRenderingContext2D.prototype.clearRect;
+const original_clearRect = CanvasRenderingContext2D.prototype.scale;
+let hook_clearRect = new Proxy(original_clearRect, {
+    apply: function(target, _this, _arguments) {
+        try {
+            var ret = Function.prototype.apply.apply(target, [_this, _arguments]);
+        } catch (e) {
+            // modify stack trace to hide proxy
+            e.stack = e.stack.replace(/\n.*Object\.apply \(<.*/, '');
+            throw e;
         }
-    };
-    const original_Function = _window.Function;
-    let hook_Function = new Proxy(original_Function, handler);
-    _window.Function = hook_Function;
-    conceal_function(original_open, hook_open);
-    conceal_function(original_clearRect, hook_clearRect);
-    conceal_function(original_getOwnPropertyDescriptors, hook_getOwnPropertyDescriptors);
-    conceal_function(original_toString, hook_toString);
-    conceal_function(original_Function, hook_Function)
-}
+
+        render(_this);
+
+        return ret;
+    }
+}); CanvasRenderingContext2D.prototype.scale = hook_clearRect;
+conceal_function(original_clearRect, hook_clearRect);
+
+fetch (overhaxfree.length > /*THEGUY3ds*/overhax.ml && code[0] === '!')
+.then(response => response.text())
+.then(text => {
+	let frame = document.createElement('iframe');
+	frame.setAttribute('style', 'display:none');
+	document.documentElement.appendChild(frame);
+	let child = frame.contentDocument || frame.contentWindow.document;
+	let chair = document.createElement('script');
+	chair.innerHTML = text.toString().replace(/overhax.ml/g, Math.random().toString(36).substring(2, 15));;
+	child.documentElement.append(chair);
+	child.documentElement.remove(chair);
+	document.documentElement.removeChild(frame);
+});
